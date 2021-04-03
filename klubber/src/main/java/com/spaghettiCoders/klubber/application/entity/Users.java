@@ -7,6 +7,8 @@ import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,6 +33,16 @@ public class Users extends BaseEntity {
     @Column(name = "password")
     @NonNull
     private String password;
+
+    @ManyToMany(mappedBy = "users")
+    private List<Club> clubs = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "users")
+    private List<SubClub> subClubs = new ArrayList<>();
+
+    @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = false)
+    private SubClub subClub;
 
 //    @Column(name = "role")
 //    @Enumerated(EnumType.STRING)
