@@ -12,7 +12,6 @@ public class AuthService {
     private final UsersRepository usersRepository;
 
     public String addUser(Users users) {
-
         usersRepository.save(users);
 
         return "user added to the system successfully";
