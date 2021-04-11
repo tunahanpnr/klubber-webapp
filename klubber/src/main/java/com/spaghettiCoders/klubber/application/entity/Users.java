@@ -2,6 +2,7 @@ package com.spaghettiCoders.klubber.application.entity;
 
 import com.spaghettiCoders.klubber.common.entity.BaseEntity;
 
+import com.spaghettiCoders.klubber.common.enums.Role;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@SequenceGenerator(name = "idgen", sequenceName = "USER_SEQ")
 public class Users extends BaseEntity {
     @Column(name = "name")
     @NonNull
@@ -34,6 +36,10 @@ public class Users extends BaseEntity {
     @NonNull
     private String password;
 
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @ManyToMany(mappedBy = "users")
     private List<Club> clubs = new ArrayList<>();
 
@@ -44,7 +50,4 @@ public class Users extends BaseEntity {
             fetch = FetchType.LAZY, optional = false)
     private SubClub subClub;
 
-//    @Column(name = "role")
-//    @Enumerated(EnumType.STRING)
-//    private ROLE role;
 }
