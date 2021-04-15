@@ -1,14 +1,16 @@
-import React from 'react';
-import Login from "./components/auth/login/Login";
-import Signup from "./components/auth/signup/Signup";
+import React from "react";
+import AUTH_ROUTES, {RenderRoutes} from "./components/Route/AUTH_ROUTES";
+import {BrowserRouter} from "react-router-dom";
 
 function App() {
     return (
-        <div className="App">
-            <Login/>
-            <Signup/>
-        </div>
+        <BrowserRouter>
+                <div className="App">
+                    <RenderRoutes routes={AUTH_ROUTES}/>
+                </div>
+        </BrowserRouter>
     );
 }
 
 export default App;
+
