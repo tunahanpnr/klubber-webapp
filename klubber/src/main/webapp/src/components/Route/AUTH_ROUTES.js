@@ -2,11 +2,35 @@ import React from "react";
 import {Route, Switch} from "react-router-dom";
 import Login from "../auth/login/Login";
 import Signup from "../auth/signup/Signup";
+import MainPage from "../MainPage/AppBar";
+import Home from "../MainPage/Home/Home";
+import Club from "../MainPage/Club/Club";
 
 const AUTH_ROUTES = [
     { path: "/", key: "ROOT", exact: true, component: () => <Login/> },
     { path: "/login", key: "LOGIN", exact: true, component: () => <Login/> },
     { path: "/signup", key: "SIGNUP", exact: true, component: () => <Signup/> },
+
+    {
+         path: "/mainPage",
+         key: "MAIN-PAGE",
+         component: () => <MainPage/>,
+         routes: [
+             {
+                 path: "/mainPage/home",
+                 key: "HOME",
+                 exact: true,
+                 component: () => <Home/>,
+            },
+             {
+                 path: "/mainPage/club",
+                 key: "CLUB",
+                 exact: true,
+                 component: () => <Club/>,
+             },
+         ],
+    },
+
     // {
     //     path: "/app",
     //     key: "APP",
@@ -27,6 +51,8 @@ const AUTH_ROUTES = [
     //     ],
     // },
 ];
+
+
 
 /**
  * Render a route with potential sub routes
@@ -57,4 +83,5 @@ export function RenderRoutes({ routes }) {
 
 
 export default AUTH_ROUTES;
+
 
