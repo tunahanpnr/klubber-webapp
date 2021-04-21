@@ -21,6 +21,7 @@ public class AuthService {
 
     public String signup(RegisterReqDTO registerReqDTO) {
 
+
         if (usersRepository.existsByUsername(registerReqDTO.getUsername())) {
             return "This username is already exits!";
         }
