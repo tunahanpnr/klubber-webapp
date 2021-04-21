@@ -15,11 +15,11 @@ NavBar:{
     flexDirection:"row",
     alignItems:"center"
 },
-ClubBar:{
+ClubBar:{  //sidebar
     position:"fixed",
     height:"100%",
     width:"70px",
-    backgroundColor:"orange",
+    backgroundColor:"#690b75",
     zIndex:"1",
     top:"4.0em",
     overflowX:"hidden",

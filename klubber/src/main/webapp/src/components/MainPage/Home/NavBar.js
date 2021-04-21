@@ -14,6 +14,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import {Button} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -77,6 +78,9 @@ const useStyles = makeStyles((theme) => ({
             display: 'none',
         },
     },
+    appBar:{
+        backgroundColor:"#690b75"
+    }
 }));
 
 export default function PrimarySearchAppBar() {
@@ -163,7 +167,7 @@ export default function PrimarySearchAppBar() {
 
     return (
         <div className={classes.grow}>
-            <AppBar position="static">
+            <AppBar position="static" className={classes.appBar}>
                 <Toolbar>
                     <IconButton
                         edge="start"
@@ -190,6 +194,7 @@ export default function PrimarySearchAppBar() {
                         />
                     </div>
                     <div className={classes.grow} />
+                    <Button color="inherit" href="/clubCreate">Create Club!</Button>
                     <div className={classes.sectionDesktop}>
                         <IconButton aria-label="show 4 new mails" color="inherit">
                             <Badge badgeContent={4} color="secondary">

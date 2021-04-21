@@ -2,28 +2,31 @@ import React, {useState} from "react";
 import axios from "axios";
 import {makeStyles} from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import CCForm from "./CCForm";
 
 const useStyles = makeStyles((theme) => ({
-    Home:{
-        backgroundColor:"teal",
+    Club:{
+        backgroundColor:"#dadbce",
         position:"fixed",
-        height:"100%",
-        width:"100%",
+        width:"93%",
         zIndex:"1",
         top:"4.6em",
         left:"5em",
-        paddingTop:"10px"
-
+        paddingTop:"2px",
+        paddingLeft:"10px",
+        paddingRight:"10px",
+        borderRadius:"25px",
+        height:"90%"
     }
 }));
 
-export default function Home(){
+export default function ClubCreate(){
     return(
-        <div className={useStyles().Home}>
+        <div className={useStyles().Club}>
             <h1>
-                HomePage
+                Club Create Page
             </h1>
-            <Button href="/club">Go to Club</Button>
+            <CCForm></CCForm>
         </div>
 
     )

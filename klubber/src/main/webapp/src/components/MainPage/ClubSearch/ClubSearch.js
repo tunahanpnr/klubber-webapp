@@ -4,8 +4,8 @@ import {makeStyles} from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
-    Home:{
-        backgroundColor:"teal",
+    Club:{
+        backgroundColor:"cyan",
         position:"fixed",
         height:"100%",
         width:"100%",
@@ -13,17 +13,16 @@ const useStyles = makeStyles((theme) => ({
         top:"4.6em",
         left:"5em",
         paddingTop:"10px"
-
     }
 }));
 
-export default function Home(){
+export default function ClubSearch(){
     return(
-        <div className={useStyles().Home}>
+        <div className={useStyles().Club}>
             <h1>
-                HomePage
+                Club Search Page
             </h1>
-            <Button href="/club">Go to Club</Button>
+            <Button href="/home">Go to Home</Button>
         </div>
 
     )

@@ -9,9 +9,12 @@ import Login from "./components/auth/login/Login";
 import Home from "./components/MainPage/Home/Home";
 import Club from "./components/MainPage/Club/Club";
 import ClubSearch from "./components/MainPage/ClubSearch/ClubSearch";
+import ClubCreate from "./components/MainPage/ClubCreate/ClubCreate";
 
 function App() {
+                 //states-----------------
     const [isAuth, setIsAuth] = useState(false);
+    const [searchBar,setSearchBar] = useState("");
 
     useEffect(() => {setIsAuth(true)
     }, []);
@@ -28,11 +31,6 @@ function App() {
                             exact={true}
                             component={() => <Login isAuth={ isAuth} setIsAuth = {setIsAuth}/>}
                         />
-                        {/*<Route*/}
-                        {/*    path={"/login"}*/}
-                        {/*    exact={true}*/}
-                        {/*    component={Login(isAuth)}*/}
-                        {/*/>*/}
                         <Route
                             path={"/signup"}
                             exact={true}
@@ -52,6 +50,11 @@ function App() {
                             path={"/clubSearch"}
                             exact={true}
                             component={ClubSearch}
+                        />
+                        <Route
+                            path={"/clubCreate"}
+                            exact={true}
+                            component={ClubCreate}
                         />
                     </Switch>
                 </div>
