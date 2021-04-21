@@ -17,6 +17,7 @@ import javax.validation.Valid;
 public class AuthController {
     private final AuthService authService;
 
+    
     @PostMapping("/signin")
     @PreAuthorize("permitAll()")
     public LoginResDTO login(@Valid @RequestBody final LoginReqDTO loginReqDTO) {

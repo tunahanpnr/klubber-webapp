@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
         padding:"4px",
         minHeight:"400px",
         maxHeight:"600px",
-        backgroundColor:"gray",
+        backgroundColor:"yellow",
         borderRadius:"5px",
         overflowY:"scroll"
     }
@@ -83,6 +84,22 @@ export default function CCForm(){
         q5a5:""
     })
 
+    const postClubCreateRequest = () => {
+        console.log(clubCreateForm)
+        axios.post("/createclub", clubCreateForm)
+            .then(
+                (response) => {
+                    console.log(response);
+                    if(response.data === ""){
+                        console.log("No response")
+                    }
+                },
+            ).catch(
+            (error) => {
+                console.log(error);
+            })
+    }
+
     return(
         <form className={classes.form}>
             <TextField
@@ -109,7 +126,7 @@ export default function CCForm(){
                     name="Question 1"
                     autoComplete="Question 1"
                     value={clubCreateForm.question1}
-                    nChange={e => setClubCreateForm({...clubCreateForm, question1: e.target.value})}
+                    onChange={e => setClubCreateForm({...clubCreateForm, question1: e.target.value})}
                 />
                 <div className={classes.answers}>
                     <TextField
@@ -183,7 +200,7 @@ export default function CCForm(){
                     name="Question 2"
                     autoComplete="Question 2"
                     value={clubCreateForm.question2}
-                    nChange={e => setClubCreateForm({...clubCreateForm, question2: e.target.value})}
+                    onChange={e => setClubCreateForm({...clubCreateForm, question2: e.target.value})}
                 />
                 <div className={classes.answers}>
                     <TextField
@@ -257,7 +274,7 @@ export default function CCForm(){
                     name="Question 3"
                     autoComplete="Question 3"
                     value={clubCreateForm.question3}
-                    nChange={e => setClubCreateForm({...clubCreateForm, question3: e.target.value})}
+                    onChange={e => setClubCreateForm({...clubCreateForm, question3: e.target.value})}
                 />
                 <div className={classes.answers}>
                     <TextField
@@ -331,7 +348,7 @@ export default function CCForm(){
                     name="Question 4"
                     autoComplete="Question 4"
                     value={clubCreateForm.question4}
-                    nChange={e => setClubCreateForm({...clubCreateForm, question4: e.target.value})}
+                    onChange={e => setClubCreateForm({...clubCreateForm, question4: e.target.value})}
                 />
                 <div className={classes.answers}>
                     <TextField
@@ -405,7 +422,7 @@ export default function CCForm(){
                     name="Question 5"
                     autoComplete="Question 5"
                     value={clubCreateForm.question5}
-                    nChange={e => setClubCreateForm({...clubCreateForm, question5: e.target.value})}
+                    onChange={e => setClubCreateForm({...clubCreateForm, question5: e.target.value})}
                 />
                 <div className={classes.answers}>
                     <TextField
@@ -473,7 +490,7 @@ export default function CCForm(){
 
             <Button
 
-                // onClick={postLoginRequest}
+                onClick={postClubCreateRequest}
                 fullWidth
                 variant="contained"
                 color="primary"
