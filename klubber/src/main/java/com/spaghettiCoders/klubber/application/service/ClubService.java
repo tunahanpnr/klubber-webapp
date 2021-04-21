@@ -17,24 +17,27 @@ public class ClubService {
     private final ClubRepository clubRepository;
 
     public String createClub(Club club, Users user){
-        if(!user.getRole().equals("ADMIN")){
-
-            return "Only users with the role of ADMIN can open a club!";
-        }
+//        if(!user.getRole().toString().equals("ADMIN")){
+//
+//            return "Only users with the role of ADMIN can open a club!";
+//        }
         if(clubRepository.existsClubByName(club.getName())) {
 
             return "this club is already exist!";
-        }if(containsIllegals(club.getName())){
-
-            return "Club Name can not contain illegal character such as \"@ ? ! | ~ ^ € % &\"";
         }
+
+//        if(containsIllegals(club.getName())){
+//
+//            return "Club Name can not contain illegal character such as \"@ ? ! | ~ ^ € % &\"";
+//        }
+
         clubRepository.save(club);
 
         return "club added to the system successfully";
     }
 
     public String deleteClub(Club club, Users user){
-        if(!user.getRole().equals("ADMIN")){
+        if(!user.getRole().toString().equals("ADMIN")){
 
             return "Only users with the role of ADMIN can delete a club!";
         }
@@ -67,3 +70,4 @@ public class ClubService {
         return dbClub.getName() + " " + dbClub.getSubClubs();
     }*/
 }
+
