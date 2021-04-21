@@ -18,7 +18,7 @@ public class Club extends BaseEntity {
     @NonNull
     private String name;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "club_id")
     private List<Questions> questions;
 

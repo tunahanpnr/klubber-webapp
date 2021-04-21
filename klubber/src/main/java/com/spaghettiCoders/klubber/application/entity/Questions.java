@@ -12,6 +12,13 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 public class Questions extends BaseEntity {
+    @Column(name = "question")
+    @NonNull
+    private String question;
 
+    private String a;
+    private String b;
+    private String c;
+    private String d;
 
 }

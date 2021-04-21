@@ -39,3 +39,4 @@ public class ClubController {
         return clubService.searchClub(club);
     }*/
 }
+

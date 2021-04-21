@@ -12,3 +12,4 @@ public interface SubClubRepository extends JpaRepository<SubClub, Long> {
     @Query("select subclub from SubClub subclub where subclub.club.name = :clubName")
     List<SubClub> getSubClub(String clubName);
 }
+
