@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import icon from "./user.png";
 import axios from "axios";
+import AuthService from "../../../service/auth/AuthService";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Login(props) {
+export default function Login(props ) {
     const classes = useStyles();
 
     const [user, setUser] = useState({
@@ -47,18 +48,17 @@ export default function Login(props) {
     })
 
     const postLoginRequest = () => {
-        axios.post("/signin", user)
+        console.log("postLogin")
+        AuthService.login(user)
             .then(
-                (response) => {
+                () => {
                     console.log(user);
-                    console.log(response);
-                    if(response.data === ""){
-                        console.log("there is no user with " + user.username)
-                    }
+                    props.history.push("/home");
+                    window.location.reload();
                 },
             ).catch(
             (error) => {
-                console.log(error);
+                console.log(error.response.data);
             })
     }
 
