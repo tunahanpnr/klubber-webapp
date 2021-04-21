@@ -1,6 +1,6 @@
 package com.spaghettiCoders.klubber.application.controller;
 
-
+import com.spaghettiCoders.klubber.application.entity.Users;
 import com.spaghettiCoders.klubber.application.entity.Club;
 import com.spaghettiCoders.klubber.application.service.ClubService;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +17,14 @@ public class ClubController {
 
     @PostMapping("/createclub")
     @PreAuthorize("permitAll()")
-    public String createClub(@Valid @RequestBody final Club club) {
-        return clubService.createClub(club);
+    public String createClub(@Valid @RequestBody final Club club, final Users user) {
+        return clubService.createClub(club, user);
     }
 
     @DeleteMapping("/deleteclub")
     @PreAuthorize("permitAll()")
-    public String deleteClub(@Valid @RequestBody final Club club) {
-        return clubService.deleteClub(club);
+    public String deleteClub(@Valid @RequestBody final Club club, final Users user) {
+        return clubService.deleteClub(club, user);
     }
 
     @GetMapping("/listclub")
