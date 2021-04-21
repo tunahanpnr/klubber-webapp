@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Login(props ) {
+export default function Login(props) {
     const classes = useStyles();
 
     const [user, setUser] = useState({
@@ -47,8 +47,6 @@ export default function Login(props ) {
     })
 
     const postLoginRequest = () => {
-        props.setIsAuth(true);
-        console.log(props.isAuth)
         axios.post("/signin", user)
             .then(
                 (response) => {
@@ -101,7 +99,6 @@ export default function Login(props ) {
                         onChange={e => setUser({...user, password: e.target.value})}
                     />
                     <Button
-                        href="/home"
                         onClick={postLoginRequest}
                         fullWidth
                         variant="contained"
