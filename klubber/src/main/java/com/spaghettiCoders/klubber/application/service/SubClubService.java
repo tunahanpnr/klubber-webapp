@@ -16,7 +16,7 @@ public class SubClubService {
     private final SubClubRepository subClubRepository;
 
     public String createSubClub(SubClub subclub, Users user){
-        if(!user.getRole().toString().equals("ADMIN")){
+        if(!user.getRole().equals("ADMIN")){
 
             return "Only users with the role of ADMIN can open a subclub!";
         }
@@ -33,7 +33,7 @@ public class SubClubService {
     }
 
     public String deleteSubClub(SubClub subclub, Users user){
-        if(!user.getRole().toString().equals("ADMIN")){
+        if(!user.getRole().equals("ADMIN")){
 
             return "Only users with the role of ADMIN can delete a subclub!";
         }
@@ -58,3 +58,4 @@ public class SubClubService {
     }
 
 }
+

@@ -1,3 +1,4 @@
+
 package com.spaghettiCoders.klubber.application.controller;
 
 import com.spaghettiCoders.klubber.application.entity.SubClub;
@@ -33,3 +34,4 @@ public class SubClubController {
         return subClubService.listSubClub(clubName);
     }
 }
+
