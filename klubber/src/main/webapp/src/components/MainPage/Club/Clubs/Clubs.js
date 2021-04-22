@@ -7,13 +7,17 @@ const useStyles = makeStyles((theme) => ({
     Club: {
         backgroundColor: "green",
         position: "fixed",
-        height: "100%",
-        width: "100%",
+        height: "92%",
+        width: "96%",
         zIndex: "1",
-        top: "4.6em",
-        left: "5em",
-        paddingTop: "10px"
+        top:"4.95em",
+        left:"5.45em",
+        paddingTop:"10px",
+        paddingLeft:"10px",
+        paddingRight:"10px",
+        borderRadius:"8px",
     }
+
 }));
 
 function createData(name, button) {

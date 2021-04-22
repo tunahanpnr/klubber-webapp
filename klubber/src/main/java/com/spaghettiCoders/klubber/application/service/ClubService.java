@@ -26,10 +26,10 @@ public class ClubService {
             return "this club is already exist!";
         }
 
-//        if(containsIllegals(club.getName())){
-//
-//            return "Club Name can not contain illegal character such as \"@ ? ! | ~ ^ € % &\"";
-//        }
+        if(containsIllegals(club.getName())){
+
+            return "Club Name can not contain illegal character such as \"@ ? ! | ~ ^ € % &\"";
+        }
 
         clubRepository.save(club);
 
