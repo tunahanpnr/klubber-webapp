@@ -7,9 +7,11 @@ import Login from "./components/auth/login/Login";
 import Signup from "./components/auth/signup/Signup";
 import Home from "./components/MainPage/Home/Home";
 import Club from "./components/MainPage/Club/Club";
-import ClubSearch from "./components/MainPage/ClubSearch/ClubSearch";
-import ClubCreate from "./components/MainPage/ClubCreate/ClubCreate";
+import ClubSearch from "./components/MainPage/Club/ClubSearch/ClubSearch";
+import ClubCreate from "./components/MainPage/Club/ClubCreate/ClubCreate";
 import AuthService from "./service/auth/AuthService";
+import Clubs from "./components/MainPage/Club/Clubs/Clubs";
+import Profile from "./components/Profile/Profile";
 
 function App() {
 
@@ -48,6 +50,11 @@ function App() {
                         component={Home}
                     />
                     <Route
+                        path={"/clubs"}
+                        exact={true}
+                        component={Clubs}
+                    />
+                    <Route
                         path={"/club"}
                         exact={true}
                         component={Club}
@@ -61,6 +68,11 @@ function App() {
                         path={"/clubCreate"}
                         exact={true}
                         component={ClubCreate}
+                    />
+                    <Route
+                        path={"/profile"}
+                        exact={true}
+                        component={Profile}
                     />
                 </Switch>
             </div>
