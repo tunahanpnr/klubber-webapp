@@ -16,10 +16,10 @@ public class SubClubService {
     private final SubClubRepository subClubRepository;
 
     public String createSubClub(SubClub subclub, Users user){
-        if(!user.getRole().equals("ADMIN")){
-
-            return "Only users with the role of ADMIN can open a subclub!";
-        }
+//        if(!user.getRole().equals("ADMIN")){
+//
+//            return "Only users with the role of ADMIN can open a subclub!";
+//        }
         if(subClubRepository.existsSubClubByName(subclub.getName())){
 
             return "this subclub is already exist!";
@@ -32,16 +32,16 @@ public class SubClubService {
         return "subclub added to the system successfully";
     }
 
-    public String deleteSubClub(SubClub subclub, Users user){
-        if(!user.getRole().equals("ADMIN")){
-
-            return "Only users with the role of ADMIN can delete a subclub!";
-        }
-        if(!subClubRepository.existsSubClubByName(subclub.getName())){
+    public String deleteSubClub(Users user, Long id){
+//        if(!user.getRole().equals("ADMIN")){
+//
+//            return "Only users with the role of ADMIN can delete a subclub!";
+//        }
+        if(!subClubRepository.existsById(id)){
 
             return "subclub not found!";
         }
-        subClubRepository.delete(subclub);
+        subClubRepository.deleteById(id);
 
         return "subclub deleted from the system successfully";
     }

@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
     },
     container: {
-        maxHeight: 440,
+        maxHeight: 780,
     },
     margin: {
         margin: theme.spacing(1),
