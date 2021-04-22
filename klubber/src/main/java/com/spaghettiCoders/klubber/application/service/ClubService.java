@@ -36,16 +36,17 @@ public class ClubService {
         return "club added to the system successfully";
     }
 
-    public String deleteClub(Club club, Users user){
-        if(!user.getRole().toString().equals("ADMIN")){
-
-            return "Only users with the role of ADMIN can delete a club!";
-        }
-        if(!clubRepository.existsClubByName(club.getName())){
+    public String deleteClub(Users user, Long id){
+//        if(!user.getRole().toString().equals("ADMIN")){
+//
+//            return "Only users with the role of ADMIN can delete a club!";
+//        }
+        if(!clubRepository.existsById(id)){
 
             return "club not found!";
         }
-        clubRepository.delete(club);
+
+        clubRepository.deleteById(id);
 
         return "club deleted from the system successfully";
     }

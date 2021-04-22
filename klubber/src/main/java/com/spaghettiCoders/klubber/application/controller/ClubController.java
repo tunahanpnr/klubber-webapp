@@ -21,10 +21,10 @@ public class ClubController {
         return clubService.createClub(club, user);
     }
 
-    @DeleteMapping("/deleteclub")
+    @DeleteMapping("/deleteclub/{id}")
     @PreAuthorize("permitAll()")
-    public String deleteClub(@Valid @RequestBody final Club club, final Users user) {
-        return clubService.deleteClub(club, user);
+    public String deleteClub(final Users user, @PathVariable Long id) {
+        return clubService.deleteClub(user, id);
     }
 
     @GetMapping("/listclub")
