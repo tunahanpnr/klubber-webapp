@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function PrimarySearchAppBar() {
+export default function PrimarySearchAppBar(props) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -110,6 +110,12 @@ export default function PrimarySearchAppBar() {
         handleMobileMenuClose();
     };
 
+    const profilePageHandler = () => {
+        setAnchorEl(null);
+        handleMobileMenuClose();
+        props.history.push("/profile");
+    };
+
     const handleMobileMenuOpen = (event) => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
@@ -125,8 +131,12 @@ export default function PrimarySearchAppBar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            <MenuItem onClick={handleMenuClose}>
+                <Button href="/profile">
+                    Profile
+                </Button>
+            </MenuItem>
+
         </Menu>
     );
 
@@ -202,6 +212,7 @@ export default function PrimarySearchAppBar() {
                     <div className={classes.grow} />
                     <Button color="inherit" href="/clubCreate">Create Club!</Button>
                     <Button color="inherit" onClick={logOut}>Log Out</Button>
+                    <Button color="inherit" href="/clubs">Clubs</Button>
                     <div className={classes.sectionDesktop}>
                         <IconButton aria-label="show 4 new mails" color="inherit">
                             <Badge badgeContent={4} color="secondary">
