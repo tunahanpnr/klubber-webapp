@@ -8,6 +8,7 @@ import com.spaghettiCoders.klubber.application.mapper.UsersMapper;
 import com.spaghettiCoders.klubber.application.repository.UsersRepository;
 import com.spaghettiCoders.klubber.common.enums.Role;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -22,6 +23,7 @@ public class AuthService {
     private final UsersMapper usersMapper;
     private final DaoAuthenticationProvider authenticationProvider;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     public String signup(RegisterReqDTO registerReqDTO) {
         if (usersRepository.existsByUsername(registerReqDTO.getUsername())) {
@@ -34,8 +36,14 @@ public class AuthService {
 
         registerReqDTO.setPassword(passwordEncoder.encode(registerReqDTO.getPassword()));
         Users newUser = usersMapper.mapToEntity(registerReqDTO);
+        String randomCode = RandomString.make(64);
+        newUser.setVerificationCode(randomCode);
+        newUser.setEnabled(false);
         newUser.setRole(Role.MEMBER);
+
         usersRepository.save(newUser);
+
+        emailService.sendVerificationEmail(newUser);
 
         return "New user added to the system successfully";
     }
@@ -44,14 +52,31 @@ public class AuthService {
         if (!usersRepository.existsByUsername(loginReqDTO.getUsername())) {
             return null;
         }
+        Users userFromDB = usersRepository.findByUsername(loginReqDTO.getUsername());
+
+        if(!userFromDB.isEnabled())
+            return null;
+
 
         Authentication usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginReqDTO.getUsername(), loginReqDTO.getPassword());
         Authentication user = authenticationProvider.authenticate(usernamePasswordAuthenticationToken);
-        Users userFromDB = usersRepository.findByUsername(loginReqDTO.getUsername());
-
 
         return new LoginResDTO(userFromDB.getName(), userFromDB.getSurname(),
                 userFromDB.getUsername(), userFromDB.getEmail(), userFromDB.getRole());
     }
 
+    public String verify(String token) {
+        Users user = usersRepository.findByVerificationCode(token);
+
+        if (user == null )
+            return "User not found";
+
+        if(user.isEnabled())
+            return "User already verified";
+
+        user.setEnabled(true);
+        usersRepository.save(user);
+
+        return "User verified successfully";
+    }
 }
