@@ -40,6 +40,12 @@ public class Users extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
+
+    @Column(name = "enabled")
+    private boolean enabled;
+
     @ManyToMany(mappedBy = "users")
     private List<Club> clubs = new ArrayList<>();
 
