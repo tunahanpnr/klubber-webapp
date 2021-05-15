@@ -19,12 +19,20 @@ public class EmailService {
 
     public void sendVerificationEmail(Users user) {
         String to = user.getEmail();
+        String verifyURL = "http://localhost:8080" + "/verify?token=" + user.getVerificationCode();
         String subject = "Please verify your registration";
-        String content = "Dear [[name]],<br>"
+        String content = "<html>\n"
+                + "<body>\n"
+                + "\n"
+                + "Dear [[name]],<br>"
                 + "Please click the link below to verify your registration:<br><br>"
-                + "[[URL]]"
+                + "<h3><a href=\"[[url]]\">\n"
+                + "VERIFY</a></h3>\n"
+                + "\n"
                 + "<br><br>Thank you,<br>"
-                + "Klubber.";
+                + "Klubber."
+                + "</body>\n"
+                + "</html>";
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -33,9 +41,7 @@ public class EmailService {
             helper.setSubject(subject);
 
             content = content.replace("[[name]]", user.getName());
-            String verifyURL = "localhost:8080" + "/verify?token=" + user.getVerificationCode();
-
-            content = content.replace("[[URL]]", verifyURL);
+            content = content.replace("[[url]]", verifyURL);
 
             helper.setText(content, true);
 
