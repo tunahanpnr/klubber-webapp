@@ -1,4 +1,4 @@
-package com.spaghettiCoders.klubber.application.secuirty;
+package com.spaghettiCoders.klubber.application.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
