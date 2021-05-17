@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
         padding:"4px",
         minHeight:"400px",
         maxHeight:"600px",
-        backgroundColor:"yellow",
+        backgroundColor:"white",
         borderRadius:"5px",
         overflowY:"scroll"
     }
