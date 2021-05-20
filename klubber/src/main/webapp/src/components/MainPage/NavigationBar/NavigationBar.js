@@ -1,21 +1,26 @@
 import React from 'react';
-import {fade, makeStyles} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import {Container} from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import SearchIcon from "@material-ui/icons/Search";
-import InputBase from "@material-ui/core/InputBase";
-import {Button, Container} from "@material-ui/core";
+import InputBase from '@material-ui/core/InputBase';
+import Menu from '@material-ui/core/Menu';
+import SearchIcon from '@material-ui/icons/Search';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import AuthService from "../../../service/auth/AuthService";
-import IconButton from "@material-ui/core/IconButton";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
+import MenuItem from '@material-ui/core/MenuItem';
+import {Button} from "@material-ui/core";
+
+
+
+
 
 
 
@@ -23,6 +28,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 export default function NavigationBar(props) {
     const classes = props.style;
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [CCanchorEl, setCCAnchorEl] = React.useState(null);
+
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -36,6 +43,36 @@ export default function NavigationBar(props) {
         console.log("pressed");
         AuthService.logout();
     }
+    const isCCMenuOpen = Boolean(CCanchorEl)
+
+    const handleClubCreateMenuOpen = (event) => {
+        setCCAnchorEl(event.currentTarget);
+    };
+
+    const handleClubCreateMenuClose = () => {
+        setCCAnchorEl(null);
+    };
+
+    const renderClubCreateMenu = (
+        <Menu
+            anchorEl={CCanchorEl}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            id={'club-create-menu'}
+            keepMounted
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            open={isCCMenuOpen}
+            onClose={handleClubCreateMenuClose}
+        >
+            <MenuItem onClick={handleClubCreateMenuClose}>
+                <Button href="/ClubCreate">
+                    Club
+                </Button>
+                <Button href="/SubClubCreate">
+                    SubClub
+                </Button>
+            </MenuItem>
+        </Menu>
+    );
 
     return (
         <div className={classes.root}>
@@ -56,7 +93,16 @@ export default function NavigationBar(props) {
                             inputProps={{ 'aria-label': 'search' }}
                         />
                     </div>
-                    <Button color="inherit" href="/clubCreate">Create Club!</Button>
+                    <IconButton className={classes.createClub}
+                        edge="end"
+                        aria-label="club create button"
+                        aria-controls={'club-create-menu'}
+                        aria-haspopup="true"
+                        onClick={handleClubCreateMenuOpen}
+                        color="inherit"
+                    >
+                        <AddBoxOutlinedIcon/>
+                    </IconButton>
                     <div>
                         <Container className={classes.profile}>
                             <IconButton
@@ -92,6 +138,8 @@ export default function NavigationBar(props) {
                                 </MenuItem>
                             </Menu>
                         </Container>
+                        {renderClubCreateMenu}
+
 
                     </div>
 

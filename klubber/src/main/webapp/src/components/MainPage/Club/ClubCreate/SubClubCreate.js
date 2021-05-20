@@ -15,12 +15,12 @@ const useStyles = makeStyles((theme) => ({
         width:"93%",
         zIndex:"1",
         top:"4.6em",
-        left:"5em",
+        left:"8em",
         paddingTop:"2px",
         paddingLeft:"10px",
         paddingRight:"10px",
         borderRadius:"25px",
-        height:"90%"
+        height:"90%",
     },
     formControl: {
         margin: theme.spacing(1),
