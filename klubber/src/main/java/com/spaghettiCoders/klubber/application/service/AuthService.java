@@ -79,4 +79,8 @@ public class AuthService {
 
         return "User verified successfully";
     }
+
+    public boolean isUserExist(String username){
+        return usersRepository.existsByUsername(username);
+    }
 }

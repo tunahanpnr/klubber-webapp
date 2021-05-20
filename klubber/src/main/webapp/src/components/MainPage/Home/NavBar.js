@@ -110,12 +110,6 @@ export default function PrimarySearchAppBar(props) {
         handleMobileMenuClose();
     };
 
-    const profilePageHandler = () => {
-        setAnchorEl(null);
-        handleMobileMenuClose();
-        props.history.push("/profile");
-    };
-
     const handleMobileMenuOpen = (event) => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
