@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
-import AUTH_ROUTES, {RenderRoutes} from "./components/Route/AUTH_ROUTES";
-import {Route, Switch, withRouter} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 import {BrowserRouter} from "react-router-dom";
 import AppBar from "./components/MainPage/AppBar";
 import Login from "./components/auth/login/Login";
@@ -13,6 +12,7 @@ import AuthService from "./service/auth/AuthService";
 import Clubs from "./components/MainPage/Club/Clubs/Clubs";
 import SubClubCreate from "./components/MainPage/Club/ClubCreate/SubClubCreate";
 import Profile from "./components/Profile/Profile";
+import Grids from "./components/Chat/Grids";
 
 function App() {
 
@@ -79,6 +79,10 @@ function App() {
                         path={"/profile"}
                         exact={true}
                         component={Profile}
+                    />
+                    <Route
+                        path={"/chat"}
+                        component={Grids}
                     />
                     <Route
                         path={"/SubClubCreate"}

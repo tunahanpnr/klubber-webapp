@@ -24,11 +24,6 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-function createData(name, button) {
-
-    return { name, button};
-}
-
 export default function Clubs(){
     const [rows, setRows] = useState([]);
     const [deleted, setDeleted] = useState(false);

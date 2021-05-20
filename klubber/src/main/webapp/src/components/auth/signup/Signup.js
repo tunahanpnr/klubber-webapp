@@ -68,7 +68,7 @@ export default function Signup(props) {
         <Container component="main" maxWidth="xs">
             <CssBaseline/>
             <div className={classes.paper}>
-                <img src={icon}/>
+                <img alt={""} src={icon}/>
                 <Typography component="h1" variant="h5">
                     Sign Up
                 </Typography>
