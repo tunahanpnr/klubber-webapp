@@ -11,6 +11,7 @@ import ClubSearch from "./components/MainPage/Club/ClubSearch/ClubSearch";
 import ClubCreate from "./components/MainPage/Club/ClubCreate/ClubCreate";
 import AuthService from "./service/auth/AuthService";
 import Clubs from "./components/MainPage/Club/Clubs/Clubs";
+import SubClubCreate from "./components/MainPage/Club/ClubCreate/SubClubCreate";
 import Profile from "./components/Profile/Profile";
 
 function App() {
@@ -78,6 +79,11 @@ function App() {
                         path={"/profile"}
                         exact={true}
                         component={Profile}
+                    />
+                    <Route
+                        path={"/SubClubCreate"}
+                        exact={true}
+                        component={SubClubCreate}
                     />
                 </Switch>
             </div>
