@@ -11,6 +11,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -89,8 +90,12 @@ export default function PrimarySearchAppBar(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
+    const [CCanchorEl, setCCAnchorEl] = React.useState(null);
+
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+    const isCCMenuOpen = Boolean(CCanchorEl)
 
     const logOut = () => {
         console.log("pressed");
@@ -101,6 +106,10 @@ export default function PrimarySearchAppBar(props) {
         setAnchorEl(event.currentTarget);
     };
 
+    const handleClubCreateMenuOpen = (event) => {
+        setCCAnchorEl(event.currentTarget);
+    };
+
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
     };
@@ -108,6 +117,9 @@ export default function PrimarySearchAppBar(props) {
     const handleMenuClose = () => {
         setAnchorEl(null);
         handleMobileMenuClose();
+    };
+    const handleClubCreateMenuClose = () => {
+        setCCAnchorEl(null);
     };
 
     const profilePageHandler = () => {
@@ -136,7 +148,26 @@ export default function PrimarySearchAppBar(props) {
                     Profile
                 </Button>
             </MenuItem>
-
+        </Menu>
+    );
+    const renderClubCreateMenu = (
+        <Menu
+            anchorEl={CCanchorEl}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            id={'club-create-menu'}
+            keepMounted
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            open={isCCMenuOpen}
+            onClose={handleClubCreateMenuClose}
+        >
+            <MenuItem onClick={handleClubCreateMenuClose}>
+                <Button href="/ClubCreate">
+                    Club
+                </Button>
+                <Button href="/SubClubCreate">
+                    SubClub
+                </Button>
+            </MenuItem>
         </Menu>
     );
 
@@ -210,15 +241,24 @@ export default function PrimarySearchAppBar(props) {
                         />
                     </div>
                     <div className={classes.grow} />
-                    <Button color="inherit" href="/clubCreate">Create Club!</Button>
+
                     <Button color="inherit" onClick={logOut}>Log Out</Button>
                     <Button color="inherit" href="/clubs">Clubs</Button>
                     <div className={classes.sectionDesktop}>
+                        <IconButton
+                            edge="end"
+                            aria-label="club create button"
+                            aria-controls={'club-create-menu'}
+                            aria-haspopup="true"
+                            onClick={handleClubCreateMenuOpen}
+                            color="inherit"
+                        >
+                            <AddBoxOutlinedIcon/>
+                        </IconButton>
                         <IconButton aria-label="show 4 new mails" color="inherit">
                             <Badge badgeContent={4} color="secondary">
                                 <MailIcon />
-                            </Badge>
-                        </IconButton>
+                            </Badge>                        </IconButton>
                         <IconButton aria-label="show 17 new notifications" color="inherit">
                             <Badge badgeContent={17} color="secondary">
                                 <NotificationsIcon />
@@ -234,6 +274,7 @@ export default function PrimarySearchAppBar(props) {
                         >
                             <AccountCircle />
                         </IconButton>
+
                     </div>
                     <div className={classes.sectionMobile}>
                         <IconButton
@@ -250,6 +291,7 @@ export default function PrimarySearchAppBar(props) {
             </AppBar>
             {renderMobileMenu}
             {renderMenu}
+            {renderClubCreateMenu}
         </div>
     );
 }

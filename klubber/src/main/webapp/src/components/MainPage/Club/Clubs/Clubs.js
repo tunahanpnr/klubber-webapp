@@ -25,7 +25,7 @@ function createData(name, button) {
     return { name, button};
 }
 
-export default function Clubs(){
+export default function Clubs({setUsername}){
     const [rows, setRows] = useState([]);
     const [deleted, setDeleted] = useState(false);
 
@@ -39,7 +39,7 @@ export default function Clubs(){
 
     return(
         <div className={useStyles().Club}>
-            <List rows={rows} setDeleted={setDeleted} deleted={deleted}/>
+            <List rows={rows} setDeleted={setDeleted} deleted={deleted} setUsername={setUsername}/>
         </div>
 
     )

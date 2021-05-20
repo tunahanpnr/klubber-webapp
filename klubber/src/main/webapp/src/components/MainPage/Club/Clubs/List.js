@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from '@material-ui/icons/Delete';
 import axios from "axios";
+import {Link as Link} from "react-router-dom"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -59,7 +60,7 @@ const columns = [
 
 
 
-export default function List(props) {
+export default function List(props,{setUsername}) {
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -71,6 +72,8 @@ export default function List(props) {
                 props.setDeleted(!props.deleted)
             })
     }
+
+
 
 
     const handleChangePage = (event, newPage) => {
@@ -100,14 +103,26 @@ export default function List(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
+                        {props.rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) =>{
+                            console.log(row)
+                        })}
                         {props.rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                             return (
                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                                     {columns.map((column) => {
+
                                         const value = row[column.id];
                                         return (
                                             <TableCell key={column.id} align={column.align}>
-                                                {column.format && typeof value === 'number' ? column.format(value) : value}
+
+                                                <Link
+                                                    to={{
+                                                        pathname: '/club',
+                                                        state: { message: row }
+                                                    }}>
+                                                    {typeof value === 'number' ? null : value}
+                                                </Link>
+
 
                                                 {column.id === "delete" ?
                                                     <IconButton aria-label="delete" className={classes.margin} onClick={() => deleteClubHandler(row.id)}>
