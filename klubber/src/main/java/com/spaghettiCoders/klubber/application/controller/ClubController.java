@@ -33,6 +33,30 @@ public class ClubController {
         return clubService.listClub();
     }
 
+    @PostMapping("/updateclubname")
+    @PreAuthorize("permitAll()")
+    public String updateClubName(@Valid @RequestBody final Club club, final Users user, final String newName) {
+        return clubService.updateClubName(club, user, newName);
+    }
+
+    @PostMapping("/updateclubid/{id}")
+    @PreAuthorize("permitAll()")
+    public String updateClubId(@Valid @RequestBody final Club club, final Users user, @PathVariable Long id) {
+        return clubService.updateClubId(club, user, id);
+    }
+
+    @PostMapping("/joinclub")
+    @PreAuthorize("permitAll()")
+    public String joinClub(@Valid @RequestBody final Club club, final Users user){
+        return clubService.joinClub(club, user);
+    }
+
+    @PostMapping("/leaveclub")
+    @PreAuthorize("permitAll()")
+    public String leaveClub(@Valid @RequestBody final Club club, final Users user){
+        return clubService.leaveClub(club, user);
+    }
+
     /*@PostMapping("/searchclub")
     @PreAuthorize("permitAll()")
     public String searchClub(@Valid @RequestBody final Club club) {
