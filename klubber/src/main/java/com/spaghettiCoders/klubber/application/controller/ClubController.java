@@ -33,6 +33,12 @@ public class ClubController {
         return clubService.listClub();
     }
 
+    /*@GetMapping("/searchclub")
+    @PreAuthorize("permitAll()")
+    public String searchClub(String clubName) {
+        return clubService.searchClub(clubName);
+    }*/
+
     /*@PostMapping("/searchclub")
     @PreAuthorize("permitAll()")
     public String searchClub(@Valid @RequestBody final Club club) {

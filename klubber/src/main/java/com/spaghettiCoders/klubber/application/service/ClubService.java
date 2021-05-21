@@ -62,6 +62,19 @@ public class ClubService {
         return matcher.find();
     }
 
+    /*public String searchClub(String clubName) {   //İşlevsiz searchclub
+        if (!clubRepository.existsClubByName(clubName)) {
+            return "There is no such club named as " + clubName;
+        } else {
+            for (Club c: clubRepository.getClubs()) {
+                if (c.getName().contains(clubName)) {
+                    return "found club " + clubName;
+                }
+            }
+            return "There is no such club named as " + clubName;
+        }
+    }*/
+
     /*public String searchClub(Club club){  TAM İSİM BEKLENMEKSİZİN BENZER İSİMLER İÇEREN KULÜPLERİ GETİRECEK.
         Club dbClub = clubRepository.findClubByName(club.getName());
 
