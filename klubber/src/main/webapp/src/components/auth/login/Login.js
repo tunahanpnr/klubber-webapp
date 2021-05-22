@@ -6,7 +6,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import icon from "./user.png";
-import axios from "axios";
 import AuthService from "../../../service/auth/AuthService";
 
 const useStyles = makeStyles((theme) => ({
@@ -67,7 +66,7 @@ export default function Login(props ) {
         <Container component="main" maxWidth="xs">
             <CssBaseline/>
             <div className={classes.paper}>
-                <img src={icon}/>
+                <img alt={""} src={icon}/>
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>

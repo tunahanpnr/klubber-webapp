@@ -33,6 +33,7 @@ public class ClubController {
         return clubService.listClub();
     }
 
+
     @PostMapping("/updateclubname")
     @PreAuthorize("permitAll()")
     public String updateClubName(@Valid @RequestBody final Club club, final Users user, final String newName) {

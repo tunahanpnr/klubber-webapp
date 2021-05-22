@@ -40,11 +40,20 @@ public class Users extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
+
+    @Column(name = "enabled")
+    private boolean enabled;
+
     @ManyToMany(mappedBy = "users")
     private List<Club> clubs = new ArrayList<>();
 
     @ManyToMany(mappedBy = "users")
     private List<SubClub> subClubs = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "users")
+    private List<Answer> answers = new ArrayList<>();
 
     @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY, optional = false)

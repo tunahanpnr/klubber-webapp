@@ -163,8 +163,6 @@ public class ClubService {
         return matcher.find();
     }
 
-
-
     /*public String searchClub(Club club){  TAM İSİM BEKLENMEKSİZİN BENZER İSİMLER İÇEREN KULÜPLERİ GETİRECEK.
         Club dbClub = clubRepository.findClubByName(club.getName());
 
