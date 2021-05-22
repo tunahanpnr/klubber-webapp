@@ -5,20 +5,21 @@ import {makeStyles} from "@material-ui/core/styles";
 import axios from "axios";
 import Question from "./Question";
 import {Alert, AlertTitle} from "@material-ui/lab";
+import AuthService from "../../../../service/auth/AuthService";
 
 const useStyles = makeStyles((theme) => ({
     form: {
         marginTop: "80px",
         marginLeft: "130px",
         marginRight: "30px",
-        backgroundColor:"#eeead1",
+        backgroundColor: "#eeead1",
     },
-    questions:{
-        display:"grid",
+    questions: {
+        display: "grid",
         gridRowGap: "25px",
     },
-    button:{
-        display:"flex",
+    button: {
+        display: "flex",
         marginLeft: "auto"
     },
     message: {
@@ -28,27 +29,60 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function CCForm(){
+export default function CCForm() {
+    const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
     const classes = useStyles();
+
     const [clubCreateForm, setClubCreateForm] = useState({
         name: "",
+        requiredScore: 100,
         questions: []
     })
 
-    const [add,setAdd] = useState(false)
+    const [question, setQuestions] = useState(
+        {
+            question: "",
+            answers: [{
+                answer: "",
+                score: 4
+            }, {
+                answer: "",
+                score: 4
+            }, {
+                answer: "",
+                score: 4
+            }, {
+                answer: "",
+                score: 4
+            }]
+        }
+    )
 
-    const handleCallback = (childData) =>{
+    const answerChangeHandler = (e, i) => {
+        let newAnswers = [...question.answers]; // copying the old datas array
+        newAnswers[i].answer = e.target.value; // replace e.target.value with whatever you want to change it to
+
+        setQuestions({...question, answers: newAnswers})
+        console.log(question)
+    }
+
+
+    const [add, setAdd] = useState(false)
+
+    const handleCallback = (childData) => {
+        console.log("childData")
+        console.log(childData)
         clubCreateForm.questions.push(childData)
     }
 
-    const errorMessage =(
+    const errorMessage = (
         <Alert severity="error">
             <AlertTitle>Error</AlertTitle>
             <strong>check it out!</strong>
         </Alert>
     )
 
-    const successMessage =(
+    const successMessage = (
         <Alert severity="success">
             <AlertTitle>Success</AlertTitle>
             <strong>Club added to the system successfully</strong>
@@ -56,12 +90,15 @@ export default function CCForm(){
     )
 
     const postClubCreateRequest = () => {
-        axios.post("/createclub", clubCreateForm)
+        console.log("-------------------------")
+        clubCreateForm.questions = question
+        console.log(clubCreateForm)
+        axios.post("/createclub/" + currentUser.username, clubCreateForm)
             .then(
                 (response) => {
                     console.log("CLUB CREATE")
                     console.log(response);
-                    if(response.data === ""){
+                    if (response.data === "") {
                         console.log("No response")
                         setAdd(false)
                     }
@@ -75,8 +112,7 @@ export default function CCForm(){
     }
 
 
-
-    return(
+    return (
         <form className={classes.form}>
             <h1>CREATE CLUB</h1>
             <TextField
@@ -93,11 +129,11 @@ export default function CCForm(){
                 onChange={e => setClubCreateForm({...clubCreateForm, name: e.target.value})}
             />
             <div className={classes.questions}>
-                <Question callbackFromParent={handleCallback} id = {"1"}/>
-                <Question callbackFromParent={handleCallback} id = {"2"}/>
-                <Question callbackFromParent={handleCallback} id = {"3"}/>
-                <Question callbackFromParent={handleCallback} id = {"4"}/>
-                <Question callbackFromParent={handleCallback} id = {"5"}/>
+                <Question question={question} answerChangeHandler={answerChangeHandler} id={"1"}/>
+                <Question question={question} answerChangeHandler={answerChangeHandler} id={"2"}/>
+                <Question question={question} answerChangeHandler={answerChangeHandler} id={"3"}/>
+                <Question question={question} answerChangeHandler={answerChangeHandler} id={"4"}/>
+                <Question question={question} answerChangeHandler={answerChangeHandler} id={"5"}/>
             </div>
 
             <Button className={classes.button}
@@ -109,7 +145,7 @@ export default function CCForm(){
                 Create Club!
             </Button>
             <div className={classes.message}>
-                {add==true && successMessage}
+                {add == true && successMessage}
                 {/*//{add==true && window.alert("Club added to the system successfully")}*/}
             </div>
         </form>

@@ -15,10 +15,10 @@ import java.util.List;
 public class ClubController {
     private final ClubService clubService;
 
-    @PostMapping("/createclub")
+    @PostMapping("/createclub/{username}")
     @PreAuthorize("permitAll()")
-    public String createClub(@Valid @RequestBody final Club club, final Users user) {
-        return clubService.createClub(club, user);
+    public String createClub(@Valid @RequestBody final Club club, @PathVariable String username) {
+        return clubService.createClub(club, username);
     }
 
     @DeleteMapping("/deleteclub/{id}")

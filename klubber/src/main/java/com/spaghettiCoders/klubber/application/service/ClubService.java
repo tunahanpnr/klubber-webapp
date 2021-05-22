@@ -2,6 +2,7 @@ package com.spaghettiCoders.klubber.application.service;
 
 import com.spaghettiCoders.klubber.application.entity.*;
 import com.spaghettiCoders.klubber.application.repository.ClubRepository;
+import com.spaghettiCoders.klubber.application.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,19 +15,20 @@ import java.util.regex.Pattern;
 public class ClubService {
 
     private final ClubRepository clubRepository;
+    private final UsersRepository usersRepository;
 
-    public String createClub(Club club, Users user){
+    public String createClub(Club club, String username){
+        Users user =  usersRepository.findByUsername(username);
+
         if(!user.getRole().toString().equals("ADMIN")){
-
             return "Only users with the role of ADMIN can open a club!";
         }
-        if(clubRepository.existsClubByName(club.getName())) {
 
+        if(clubRepository.existsClubByName(club.getName())) {
             return "this club is already exist!";
         }
 
         if(containsIllegals(club.getName())){
-
             return "Club Name can not contain illegal character such as \"@ ? ! | ~ ^ € % &\"";
         }
 

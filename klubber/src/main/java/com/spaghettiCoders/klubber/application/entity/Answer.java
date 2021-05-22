@@ -13,8 +13,9 @@ import java.util.List;
 @Setter
 public class Answer extends BaseEntity {
 
-    @Column(name = "question")
-    private String question;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "question_id")
+    private Question question;
 
     @Column(name = "answer")
     private String answer;

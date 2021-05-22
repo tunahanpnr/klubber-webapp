@@ -17,37 +17,31 @@ const useStyles = makeStyles((theme) => ({
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(1),
-        height:"100%",
+        height: "100%",
     },
 }));
 
 export default function Question(props) {
     const classes = useStyles();
 
-    const [question, setQuestions] = useState(
-        {
-            question: "",
-            a:"",
-            b:"",
-            c:"",
-            d:"",
-        }
-    )
+
+
+
 
     const onTrigger = (event) => {
         props.callbackFromParent(question);
         event.preventDefault();
     }
 
-    return(
+    return (
         <div className={classes.root}>
-            <form className={classes.form}  onSubmit={onTrigger}>
+            <form className={classes.form} onSubmit={onTrigger}>
                 <TextField
                     variant="outlined"
                     margin="normal"
                     required
                     fullWidth
-                    id= {"question" + props.id}
+                    id={"question" + props.id}
                     label={"Question " + props.id}
                     name={"Question " + props.id}
                     autoComplete={"Question " + props.id}
@@ -64,8 +58,8 @@ export default function Question(props) {
                         label={"Answer 1"}
                         name={"Answer 1"}
                         autoComplete={"Answer 1"}
-                        value={question.a}
-                        onChange={e => setQuestions({...question, a: e.target.value})}
+                        value={question.answers[0].answer}
+                        onChange={e => answerChangeHandler(e, 0)}
                     />
 
                     <TextField
@@ -77,8 +71,8 @@ export default function Question(props) {
                         label={"Answer 2"}
                         name={"Answer 2"}
                         autoComplete={"Answer 2"}
-                        value={question.b}
-                        onChange={e => setQuestions({...question, b: e.target.value})}
+                        value={question.answers[1].answer}
+                        onChange={e => answerChangeHandler(e, 1)}
                     />
 
                     <TextField
@@ -90,8 +84,8 @@ export default function Question(props) {
                         label={"Answer 3"}
                         name={"Answer 3"}
                         autoComplete={"Answer 3"}
-                        value={question.c}
-                        onChange={e => setQuestions({...question, c: e.target.value})}
+                        value={question.answers[2].answer}
+                        onChange={e => answerChangeHandler(e, 2)}
                     />
 
                     <TextField
@@ -103,8 +97,8 @@ export default function Question(props) {
                         label={"Answer 4"}
                         name={"Answer 4"}
                         autoComplete={"Answer 4"}
-                        value={question.d}
-                        onChange={e => setQuestions({...question, d: e.target.value})}
+                        value={question.answers[3].answer}
+                        onChange={e => answerChangeHandler(e, 3)}
                     />
                 </div>
             </form>
