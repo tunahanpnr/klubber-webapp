@@ -27,10 +27,7 @@ public class SubClub extends BaseEntity {
     @JoinColumn(name = "club_id")
     private Club club;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "subclub_user",
             joinColumns = @JoinColumn(name = "subclub_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")

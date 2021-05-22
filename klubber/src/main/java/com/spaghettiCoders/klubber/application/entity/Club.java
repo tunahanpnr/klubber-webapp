@@ -1,6 +1,7 @@
 package com.spaghettiCoders.klubber.application.entity;
 
 import com.spaghettiCoders.klubber.common.entity.BaseEntity;
+import lombok.Cleanup;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -20,10 +21,13 @@ public class Club extends BaseEntity {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "club_id")
-    private List<Questions> questions;
+    private List<Question> questions;
 
     @OneToMany(mappedBy = "club")
     private List<SubClub> subClubs;
+
+    @Column(name = "club_score")
+    private int requiredScore;
 
     @ManyToMany(cascade = {
             CascadeType.PERSIST,

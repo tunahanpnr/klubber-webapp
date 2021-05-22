@@ -1,6 +1,7 @@
 
 package com.spaghettiCoders.klubber.application.controller;
 
+import com.spaghettiCoders.klubber.application.entity.Club;
 import com.spaghettiCoders.klubber.application.entity.SubClub;
 import com.spaghettiCoders.klubber.application.entity.Users;
 import com.spaghettiCoders.klubber.application.service.SubClubService;
@@ -32,6 +33,31 @@ public class SubClubController {
     @PreAuthorize("permitAll()")
     public List<SubClub> listSubClub(@Valid @RequestBody final String clubName){
         return subClubService.listSubClub(clubName);
+    }
+
+
+    @PostMapping("/joinsubclub")
+    @PreAuthorize("permitAll()")
+    public String joinSubClub(@Valid @RequestBody final SubClub subclub, final Users user){
+        return subClubService.joinSubClub(subclub, user);
+    }
+
+    @PostMapping("/leaveSubClub")
+    @PreAuthorize("permitAll()")
+    public String leaveSubClub(@Valid @RequestBody final SubClub subclub, final Users user){
+        return subClubService.leaveSubClub(subclub, user);
+    }
+
+    @PostMapping("/updatesubclubname")
+    @PreAuthorize("permitAll()")
+    public String updateSubClubName(@Valid @RequestBody final SubClub subclub, final Users user, final String newName) {
+        return subClubService.updateSubClubName(subclub, user, newName);
+    }
+
+    @PostMapping("/updatesubclubid/{id}")
+    @PreAuthorize("permitAll()")
+    public String updateClubId(@Valid @RequestBody final SubClub subclub, final Users user, @PathVariable Long id) {
+        return subClubService.updateSubClubId(subclub, user, id);
     }
 }
 

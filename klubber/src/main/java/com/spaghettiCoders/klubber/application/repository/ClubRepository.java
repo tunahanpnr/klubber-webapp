@@ -9,6 +9,9 @@ import java.util.List;
 public interface ClubRepository extends JpaRepository<Club, Long> {
     boolean existsClubByName(String clubName);
 
+    @Query("select club from Club club where club.name = :clubName")
+    Club getClubByName(String clubName);
+
     @Query("select club from Club club")
     List<Club> getClubs();
     
