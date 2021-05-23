@@ -39,41 +39,9 @@ export default function CCForm() {
         questions: []
     })
 
-    const [question, setQuestions] = useState(
-        {
-            question: "",
-            answers: [{
-                answer: "",
-                score: 4
-            }, {
-                answer: "",
-                score: 4
-            }, {
-                answer: "",
-                score: 4
-            }, {
-                answer: "",
-                score: 4
-            }]
-        }
-    )
-
-    const answerChangeHandler = (e, i) => {
-        let newAnswers = [...question.answers]; // copying the old datas array
-        newAnswers[i].answer = e.target.value; // replace e.target.value with whatever you want to change it to
-
-        setQuestions({...question, answers: newAnswers})
-        console.log(question)
-    }
-
 
     const [add, setAdd] = useState(false)
 
-    const handleCallback = (childData) => {
-        console.log("childData")
-        console.log(childData)
-        clubCreateForm.questions.push(childData)
-    }
 
     const errorMessage = (
         <Alert severity="error">
@@ -90,8 +58,7 @@ export default function CCForm() {
     )
 
     const postClubCreateRequest = () => {
-        console.log("-------------------------")
-        clubCreateForm.questions = question
+
         console.log(clubCreateForm)
         axios.post("/createclub/" + currentUser.username, clubCreateForm)
             .then(
@@ -109,6 +76,16 @@ export default function CCForm() {
                 console.log(error);
                 setAdd(false)
             })
+    }
+
+    const pushQuestion = (question) => {
+        console.log(clubCreateForm)
+        let newQuestions = [...clubCreateForm.questions]; // copying the old datas array
+        newQuestions.push(question)
+
+        setClubCreateForm({...clubCreateForm, questions: newQuestions})
+
+        console.log(clubCreateForm)
     }
 
 
@@ -129,11 +106,11 @@ export default function CCForm() {
                 onChange={e => setClubCreateForm({...clubCreateForm, name: e.target.value})}
             />
             <div className={classes.questions}>
-                <Question question={question} answerChangeHandler={answerChangeHandler} id={"1"}/>
-                <Question question={question} answerChangeHandler={answerChangeHandler} id={"2"}/>
-                <Question question={question} answerChangeHandler={answerChangeHandler} id={"3"}/>
-                <Question question={question} answerChangeHandler={answerChangeHandler} id={"4"}/>
-                <Question question={question} answerChangeHandler={answerChangeHandler} id={"5"}/>
+                <Question id={1} pushQuestion={pushQuestion}/>
+                <Question id={2} pushQuestion={pushQuestion}/>
+                <Question id={3} pushQuestion={pushQuestion}/>
+                <Question id={4} pushQuestion={pushQuestion}/>
+                <Question id={5} pushQuestion={pushQuestion}/>
             </div>
 
             <Button className={classes.button}

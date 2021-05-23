@@ -1,6 +1,8 @@
 package com.spaghettiCoders.klubber.application.service;
 
+import com.spaghettiCoders.klubber.application.dto.ClubDTO;
 import com.spaghettiCoders.klubber.application.entity.*;
+import com.spaghettiCoders.klubber.application.mapper.ClubMapper;
 import com.spaghettiCoders.klubber.application.repository.ClubRepository;
 import com.spaghettiCoders.klubber.application.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ public class ClubService {
 
     private final ClubRepository clubRepository;
     private final UsersRepository usersRepository;
+    private final ClubMapper clubMapper;
 
     public String createClub(Club club, String username){
         Users user =  usersRepository.findByUsername(username);
@@ -92,8 +95,9 @@ public class ClubService {
         return "Club updated sucessfully.";
     }
 
-    public List<Club> listClub(){
-        return clubRepository.getClubs();
+    public List<ClubDTO> listClub(){
+        List<Club> clubs = clubRepository.getClubs();
+        return clubMapper.mapToDto(clubs);
     }
 
     public String joinClub(Club club, Users user){

@@ -14,7 +14,6 @@ import java.util.List;
 public class Answer extends BaseEntity {
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "question_id")
     private Question question;
 
     @Column(name = "answer")

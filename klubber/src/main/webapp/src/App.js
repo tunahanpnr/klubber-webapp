@@ -70,11 +70,11 @@ function App() {
                         exact={true}
                         component={ClubSearch}
                     />
-                    {/*<Route*/}
-                    {/*    path={"/clubCreate"}*/}
-                    {/*    exact={true}*/}
-                    {/*    component={ClubCreate}*/}
-                    {/*/>*/}
+                    <Route
+                        path={"/clubCreate"}
+                        exact={true}
+                        component={ClubCreate}
+                    />
                     <Route
                         path={"/profile"}
                         exact={true}
