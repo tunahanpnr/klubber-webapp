@@ -5,6 +5,8 @@ import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import AuthService from "../../service/auth/AuthService";
+import Button from "@material-ui/core/Button";
+import axios from "axios";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -22,35 +24,65 @@ const useStyles = makeStyles((theme) => ({
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(1),
     },
-    signUp: {
+    signIn: {
+        backgroundColor: "#7b1fa2",
+        '&:hover': {
+            background: "#ab47bc",
+        },
+    }, signUp: {
         backgroundColor: "#00897b",
         '&:hover': {
             background: "#4db6ac",
         },
         margin: theme.spacing(3, 0, 2),
     },
-    signIn: {
-        backgroundColor: "#7b1fa2",
-        '&:hover': {
-            background: "#ab47bc",
-        },
-    }
 }));
 
 export default function Profile() {
-    const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
     const classes = useStyles();
 
-    // const postSignupRequest = () => {
-    //     axios.post("/signup", newUser)
-    //         .then(response => {
-    //             console.log(newUser)
-    //             console.log(response)
-    //         })
-    //         .catch((e) => {
-    //             console.log(e);
-    //         });
-    // }
+    const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
+    const [updatedUser, setUpdatedUser] = useState(AuthService.getCurrentUser());
+    const [changePass, setChangePass] = useState({
+        oldPassword: "",
+        newPassword: ""
+    });
+    const [passEnable, setPassEnable] = useState(false);
+
+
+    const postUpdateUser = () => {
+        console.log("/updateprofile/" + currentUser.username)
+        console.log(updatedUser)
+        axios.post("/updateprofile/" + currentUser.username, updatedUser)
+            .then(response => {
+                console.log(updatedUser)
+                console.log(response)
+                if (response.data === "Your profile updated successfully")
+                    localStorage.setItem("user", JSON.stringify(setUpdatedUser));
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    }
+
+    const postChangePassword = () => {
+        console.log("/changepassword/" + currentUser.username)
+        console.log(updatedUser)
+        axios.post("/changepassword/" + currentUser.username, changePass)
+            .then(response => {
+                console.log(changePass)
+                console.log(response)
+
+                setChangePass({
+                    oldPassword: "",
+                    newPassword: ""
+                })
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    }
+
 
     return (
         <Container component="main" maxWidth="xs">
@@ -60,7 +92,7 @@ export default function Profile() {
                     My Profile
                 </Typography>
                 <form className={classes.form}>
-                    <TextField
+                    {!passEnable && <div><TextField
                         variant="outlined"
                         margin="normal"
                         required
@@ -69,42 +101,103 @@ export default function Profile() {
                         label="Name"
                         name="name"
                         autoFocus
-                        value={currentUser.name}
-                        // onChange={e => setNewUser({...newUser, name: e.target.value})}
+                        value={updatedUser.name}
+                        onChange={e => setUpdatedUser({...updatedUser, name: e.target.value})}
                     />
-                    <TextField
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="surname"
+                            label="Surname"
+                            name="surname"
+                            value={updatedUser.surname}
+                            onChange={e => setUpdatedUser({...updatedUser, surname: e.target.value})}
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="username"
+                            label="Username"
+                            name="username"
+                            value={updatedUser.username}
+                            onChange={e => setUpdatedUser({...updatedUser, username: e.target.value})}
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="E-mail"
+                            name="email"
+                            value={updatedUser.email}
+                            onChange={e => setUpdatedUser({...updatedUser, email: e.target.value})}
+                        /></div>}
+                    {passEnable && <div><TextField
                         variant="outlined"
                         margin="normal"
                         required
                         fullWidth
-                        id="surname"
-                        label="Surname"
-                        name="surname"
-                        value={currentUser.surname}
-                        // onChange={e => setNewUser({...newUser, surname: e.target.value})}
+                        name="Old Password"
+                        label="Old Password"
+                        type="Old Password"
+                        id="Old Password"
+                        value={changePass.oldPassword}
+                        onChange={e => setChangePass({...changePass, oldPassword: e.target.value})}
                     />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="Old Password"
+                            label="Old Password"
+                            type="Old Password"
+                            id="Old Password"
+                            value={changePass.newPassword}
+                            onChange={e => setChangePass({...changePass, newPassword: e.target.value})}
+                        /></div>}
+                    {!passEnable && <Button
+                        onClick={postUpdateUser}
                         fullWidth
-                        id="username"
-                        label="Username"
-                        name="username"
-                        value={currentUser.username}
-                        // onChange={e => setNewUser({...newUser, username: e.target.value})}
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
+                        variant="contained"
+                        color="primary"
+                        className={classes.signIn}
+                    >
+                        Update Profile
+                    </Button>}
+                    {!passEnable && <Button
+                        onClick={() => setPassEnable(true)}
                         fullWidth
-                        id="email"
-                        label="E-mail"
-                        name="email"
-                        value={currentUser.email}
-                        // onChange={e => setNewUser({...newUser, email: e.target.value})}
-                    />
+                        variant="contained"
+                        color="primary"
+                        className={classes.signUp}
+                    >
+                        Change Password Fields
+                    </Button>}
+
+                    {passEnable && <Button
+                        onClick={postChangePassword}
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.signIn}
+                    >
+                        Change My Password
+                    </Button>}
+                    {passEnable && <Button
+                        onClick={() => setPassEnable(false)}
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.signUp}
+                    >
+                        Cancel Change Password
+                    </Button>}
                 </form>
             </div>
         </Container>
