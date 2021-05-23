@@ -17,7 +17,8 @@ public class Question extends BaseEntity {
     @NonNull
     private String question;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "question_id")
     private List<Answer> answers = new ArrayList<>();
 
     @ManyToOne(cascade = {CascadeType.ALL})

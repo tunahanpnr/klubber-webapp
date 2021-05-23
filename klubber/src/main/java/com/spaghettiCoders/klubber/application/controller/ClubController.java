@@ -1,5 +1,6 @@
 package com.spaghettiCoders.klubber.application.controller;
 
+import com.spaghettiCoders.klubber.application.dto.ClubDTO;
 import com.spaghettiCoders.klubber.application.entity.Users;
 import com.spaghettiCoders.klubber.application.entity.Club;
 import com.spaghettiCoders.klubber.application.service.ClubService;
@@ -29,7 +30,7 @@ public class ClubController {
 
     @GetMapping("/listclub")
     @PreAuthorize("permitAll()")
-    public List<Club> listClub() {
+    public List<ClubDTO> listClub() {
         return clubService.listClub();
     }
 
