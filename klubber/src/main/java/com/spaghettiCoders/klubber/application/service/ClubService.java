@@ -40,17 +40,20 @@ public class ClubService {
         return "club added to the system successfully";
     }
 
-    public String deleteClub(Users user, Long id){
-        if(!user.getRole().toString().equals("ADMIN")){
+    public String deleteClub(String username, String name){
+        Users users = usersRepository.findByUsername(username);
 
+        if(!users.getRole().toString().equals("ADMIN")){
             return "Only users with the role of ADMIN can delete a club!";
         }
-        if(!clubRepository.existsById(id)){
 
+        if(!clubRepository.existsClubByName(name)){
             return "club not found!";
         }
 
-        clubRepository.deleteById(id);
+        Club club = clubRepository.getClubByName(name);
+
+        clubRepository.delete(club);
 
         return "club deleted from the system successfully";
     }
