@@ -4,6 +4,7 @@ import List from "./List";
 import axios from "axios";
 import ClubList from "./ClubList";
 import ClubJoin from "./ClubJoin";
+import AuthService from "../../../../service/auth/AuthService";
 
 const useStyles = makeStyles((theme) => ({
     Club: {
@@ -24,13 +25,17 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function Clubs(){
+export default function Clubs(props){
     const [rows, setRows] = useState([]);
     const [deleted, setDeleted] = useState(false);
+
+    const user = AuthService.getCurrentUser();
+
 
     useEffect(() => {
         axios.get("/listclub")
             .then(response => {
+                console.log("-----")
                 console.log(response.data);
                 setRows(response.data);
             })
@@ -38,12 +43,16 @@ export default function Clubs(){
 
     return(
         <div className={useStyles().Club}>
-            {/*<List rows={rows} setDeleted={setDeleted} deleted={deleted}/>*/}
-            <h2>MY CLUBS</h2>
-            <ClubList rows={rows} setDeleted={setDeleted} deleted={deleted}/>
-            <h2>AVAİLABLE CLUBS</h2>
-            <ClubJoin rows={rows} setDeleted={setDeleted} deleted={deleted}/>
+            {(user.role == "ADMIN") ? (
+                <List rows={rows} setDeleted={setDeleted} deleted={deleted}/>
+            ) : (
+                <div>
+                    <h2>MY CLUBS</h2>
+                    <ClubList rows={rows} setDeleted={setDeleted} deleted={deleted}/>
+                    <h2>AVAİLABLE CLUBS</h2>
+                    <ClubJoin rows={rows} setDeleted={setDeleted} deleted={deleted}/>
+                </div>
+            )}
         </div>
-
     )
 }

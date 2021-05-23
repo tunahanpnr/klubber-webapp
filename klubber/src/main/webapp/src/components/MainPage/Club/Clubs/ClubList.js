@@ -11,6 +11,8 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import axios from "axios";
 import {Link} from "react-router-dom";
+import Home from "../../Home/Home";
+import {findAllByDisplayValue} from "@testing-library/react";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
 
 const columns = [
     {id: 'name', label: 'Name', minWidth: 170},
-    {id: 'delete', label: 'Delete', minWidth: 100},
 ];
 
 
@@ -37,23 +38,6 @@ export default function ClubList(props) {
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-    const deleteClubHandler = (id) => {
-        axios.delete("/deleteclub/" + id)
-            .then(response => {
-                console.log(response)
-                props.setDeleted(!props.deleted)
-            })
-    }
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
 
     return (
         <Paper className={classes.root}>
@@ -81,14 +65,10 @@ export default function ClubList(props) {
                                         return (
                                             <TableCell key={column.id} align={column.align}>
                                                 {column.id === 'name' ?
-                                                    <Link to={value}>
+                                                    // <Link onClick={goToClubPage} to={"clubs/" + value} >
+                                                    <Link to={"club/" + value}>
                                                         {value}
                                                     </Link> : null}
-
-                                                {column.id === "delete" ?
-                                                    <IconButton aria-label="delete" className={classes.margin} onClick={() => deleteClubHandler(row.id)}>
-                                                        <DeleteIcon/>
-                                                    </IconButton> : null}
 
                                             </TableCell>
                                         );

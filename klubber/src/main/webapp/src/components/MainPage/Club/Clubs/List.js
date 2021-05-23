@@ -125,7 +125,7 @@ export default function List(props,{setUsername}) {
 
                                                 {column.id === "delete" ?
                                                     <IconButton aria-label="delete" className={classes.margin} onClick={() => deleteClubHandler(row.id)}>
-                                                    <DeleteIcon/>
+                                                        <DeleteIcon/>
                                                     </IconButton> : null}
 
                                             </TableCell>

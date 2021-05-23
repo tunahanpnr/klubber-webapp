@@ -60,7 +60,7 @@ function App() {
                         setUsername={setUsername}
                     />
                     <Route
-                        path={"/club"}
+                        path={"/club/:name"}
                         exact={true}
                         component={Club}
                         username={username}

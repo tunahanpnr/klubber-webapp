@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import List from '@material-ui/core/List';
@@ -17,6 +17,7 @@ import AuthService from "../../../service/auth/AuthService";
 import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
 import MenuItem from '@material-ui/core/MenuItem';
 import {Button} from "@material-ui/core";
+import axios from "axios";
 
 
 
@@ -29,6 +30,7 @@ export default function NavigationBar(props) {
     const classes = props.style;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [CCanchorEl, setCCAnchorEl] = React.useState(null);
+    const [clubs, setClubs] = useState([]);
 
 
     const handleClick = (event) => {
@@ -52,6 +54,13 @@ export default function NavigationBar(props) {
     const handleClubCreateMenuClose = () => {
         setCCAnchorEl(null);
     };
+
+    useEffect(() => {
+        axios.get("/listclub")
+            .then(response => {
+                setClubs(response.data);
+            })
+    },)
 
     const renderClubCreateMenu = (
         <Menu
@@ -94,12 +103,12 @@ export default function NavigationBar(props) {
                         />
                     </div>
                     <IconButton className={classes.createClub}
-                        edge="end"
-                        aria-label="club create button"
-                        aria-controls={'club-create-menu'}
-                        aria-haspopup="true"
-                        onClick={handleClubCreateMenuOpen}
-                        color="inherit"
+                                edge="end"
+                                aria-label="club create button"
+                                aria-controls={'club-create-menu'}
+                                aria-haspopup="true"
+                                onClick={handleClubCreateMenuOpen}
+                                color="inherit"
                     >
                         <AddBoxOutlinedIcon/>
                     </IconButton>
@@ -159,11 +168,14 @@ export default function NavigationBar(props) {
                 <div className={classes.toolbar} />
                 <Divider />
                 <List>
-                    {['X club', 'Y club', 'Z club', 'Q club'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
+                    {clubs.map((club) =>{
+                        return(
+                            // <MenuItem value={club.name}>{club.name}</MenuItem>
+                            <ListItem button key={club.name}>
+                                <ListItemText primary={club.name} />
+                            </ListItem>
+                        )
+                    })}
                 </List>
             </Drawer>
         </div>
