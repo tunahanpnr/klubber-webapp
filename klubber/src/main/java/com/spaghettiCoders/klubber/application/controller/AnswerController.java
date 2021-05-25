@@ -1,7 +1,6 @@
 package com.spaghettiCoders.klubber.application.controller;
 
 
-import com.spaghettiCoders.klubber.application.dto.request.AnswersSelectionReqDTO;
 import com.spaghettiCoders.klubber.application.entity.Club;
 import com.spaghettiCoders.klubber.application.entity.Users;
 import com.spaghettiCoders.klubber.application.service.AnswerService;
@@ -18,12 +17,5 @@ import javax.validation.Valid;
 public class AnswerController {
     private final AnswerService answersService;
 
-    @PostMapping("/selectanswer")
-    @PreAuthorize("permitAll()")
-    public void setUserAnswers(@Valid @RequestBody final Club club,
-                                 final Users user,
-                                 AnswersSelectionReqDTO answersSelectionReqDTO){
-        answersService.setUserAnswers(club, user, answersSelectionReqDTO);
-    }
 
 }
