@@ -1,5 +1,6 @@
 package com.spaghettiCoders.klubber.application.service;
 
+import com.spaghettiCoders.klubber.application.entity.Rate;
 import com.spaghettiCoders.klubber.application.entity.SubClub;
 import com.spaghettiCoders.klubber.application.entity.Users;
 import com.spaghettiCoders.klubber.application.repository.SubClubRepository;

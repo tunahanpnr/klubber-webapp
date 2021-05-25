@@ -55,6 +55,14 @@ public class Users extends BaseEntity {
     @ManyToMany(mappedBy = "users")
     private List<Answer> answers = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "users_id")
+    private List<Post> postList = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "users_id")
+    private List<Rate> rateList = new ArrayList<>();
+
     @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY, optional = false)
     private SubClub subClub;
