@@ -84,7 +84,6 @@ export default function Chat(props) {
 
                 <div className="msger-inputarea">
                     <input type="text" className="msger-input" placeholder="Enter your message..."
-                           value={newMsg}
                            onChange={e => setNewMsg(e.target.value)}/>
                     <button className="msger-send-btn" onClick={sendMessage}>Send</button>
                 </div>

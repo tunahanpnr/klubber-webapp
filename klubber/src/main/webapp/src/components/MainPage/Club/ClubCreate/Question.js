@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 import TextField from "@material-ui/core/TextField";
 import {makeStyles} from "@material-ui/core/styles";
-import {Grid, Paper} from "@material-ui/core";
-import ChatTemplate from "../../../Chat/ChatTemplate";
+import {Grid} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 
 
@@ -42,13 +41,13 @@ export default function Question(props) {
                 score: 4
             }, {
                 answer: "",
-                score: 4
+                score: 3
             }, {
                 answer: "",
-                score: 4
+                score: 2
             }, {
                 answer: "",
-                score: 4
+                score: 1
             }]
         }
     )
@@ -58,14 +57,6 @@ export default function Question(props) {
         newAnswers[i].answer = e.target.value; // replace e.target.value with whatever you want to change it to
 
         setQuestions({...question, answers: newAnswers})
-    }
-
-    const scoreChangeHandler = (e, i) => {
-        let newAnswers = [...question.answers]; // copying the old datas array
-        newAnswers[i].score = e.target.value; // replace e.target.value with whatever you want to change it to
-
-        setQuestions({...question, answers: newAnswers})
-
     }
 
     const showAnswers = () => {
@@ -94,7 +85,6 @@ export default function Question(props) {
                             label={"Point " + answerId}
                             name={"Point " + answerId}
                             value={question.answers[answerId - 1].score}
-                            onChange={e => scoreChangeHandler(e, answerId - 1)}
                         />
                     </Grid>
                 </Grid>

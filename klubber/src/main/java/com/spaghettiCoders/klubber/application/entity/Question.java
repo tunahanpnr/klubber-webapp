@@ -1,5 +1,6 @@
 package com.spaghettiCoders.klubber.application.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spaghettiCoders.klubber.common.entity.BaseEntity;
 import lombok.Getter;
 import lombok.NonNull;

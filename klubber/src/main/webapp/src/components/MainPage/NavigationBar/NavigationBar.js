@@ -60,7 +60,7 @@ export default function NavigationBar(props) {
             .then(response => {
                 setClubs(response.data);
             })
-    },)
+    },[])
 
     const renderClubCreateMenu = (
         <Menu
@@ -170,7 +170,6 @@ export default function NavigationBar(props) {
                 <List>
                     {clubs.map((club) =>{
                         return(
-                            // <MenuItem value={club.name}>{club.name}</MenuItem>
                             <ListItem button key={club.name}>
                                 <ListItemText primary={club.name} />
                             </ListItem>

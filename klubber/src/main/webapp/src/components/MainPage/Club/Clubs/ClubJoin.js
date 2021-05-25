@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -12,6 +12,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import axios from "axios";
 import {Link} from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import AuthService from "../../../../service/auth/AuthService";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -19,9 +20,8 @@ const useStyles = makeStyles((theme) => ({
         width: '95%',
     },
     container: {
-        height: "250px",
-        maxHeight: 250,
-
+        height: "600px",
+        maxHeight: 600,
     },
     margin: {
         margin: theme.spacing(1),
@@ -39,20 +39,38 @@ const columns = [
 
 export default function ClubJoin(props) {
     const classes = useStyles();
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [joinClubForm, setJoinClubForm] = useState({
+        name: "",
+        club_user: AuthService.getCurrentUser()
+    })
 
 
-    const joinClubHandler = (id) => {
-        // axios.delete("/deleteclub/" + id)
-        //     .then(response => {
-        //         console.log(response)
-        //         props.setDeleted(!props.deleted)
-        //     })
-    }
+    // const joinClubHandler = (clubName) => {
+    //     console.log(clubName)
+    //
+    //     joinClubForm.name = clubName
+    //     // setJoinClubForm({...joinClubForm, joinClubForm.name: clubName})
+    //
+    //     console.log(joinClubForm)
+    //     // props.setDeleted(!props.deleted)
+    //
+    //     // axios.post("/joinclub", joinClubForm)
+    //     //     .then(
+    //     //         (response) => {
+    //     //             console.log("CLUB JOIN")
+    //     //             console.log(response);
+    //     //             if (response.data === "") {
+    //     //                 console.log("No response")
+    //     //             }
+    //     //         },
+    //     //     ).catch(
+    //     //     (error) => {
+    //     //         console.log(error);
+    //     //     })
+    // }
 
 
-    return (
+        return (
         <Paper className={classes.root}>
             <TableContainer className={classes.container}>
                 <Table stickyHeader aria-label="sticky table">
@@ -70,7 +88,7 @@ export default function ClubJoin(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {props.rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                        {props.rows.map((row) => {
                             return (
                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                                     {columns.map((column) => {
@@ -78,7 +96,7 @@ export default function ClubJoin(props) {
                                         return (
                                             <TableCell key={column.id} align={column.align}>
                                                 {column.id === 'name' ?
-                                                    <Link to={value} onClick>
+                                                    <Link to={"club/" + value}>
                                                         {value}
                                                     </Link> : null}
 
@@ -87,10 +105,11 @@ export default function ClubJoin(props) {
                                                             color="primary"
                                                             aria-label="join"
                                                             className={classes.margin}
-                                                            onClick={() => joinClubHandler(row.id)}>
+                                                            // onClick={() => joinClubHandler(row.name)}
+                                                            href={"QuestionnairePage/" + row.name}
+                                                    >
                                                         Join
                                                     </Button> : null}
-
                                             </TableCell>
                                         );
                                     })}

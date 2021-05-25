@@ -75,7 +75,7 @@ export default function ClubList(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {props.rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                        {props.rows.map((row) => {
                             return (
                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                                     {columns.map((column) => {
@@ -83,7 +83,7 @@ export default function ClubList(props) {
                                         return (
                                             <TableCell key={column.id} align={column.align}>
                                                 {column.id === 'name' ?
-                                                    <Link to={value}>
+                                                    <Link to={"club/" + value}>
                                                         {value}
                                                     </Link> : null}
 
