@@ -1,6 +1,7 @@
 package com.spaghettiCoders.klubber.application.controller;
 
 import com.spaghettiCoders.klubber.application.dto.ClubDTO;
+import com.spaghettiCoders.klubber.application.dto.UserDTO;
 import com.spaghettiCoders.klubber.application.dto.request.JoinClubReqDTO;
 import com.spaghettiCoders.klubber.application.entity.Question;
 import com.spaghettiCoders.klubber.application.entity.Users;
@@ -59,6 +60,12 @@ public class ClubController {
     @PreAuthorize("permitAll()")
     public String leaveClub(@Valid @RequestBody final Club club, final Users user){
         return clubService.leaveClub(club, user);
+    }
+
+    @GetMapping("/getclubusers/{clubname}")
+    @PreAuthorize("permitAll()")
+    public List<UserDTO> getUsers(@PathVariable String clubname) {
+        return clubService.getUsers(clubname);
     }
 
     /*@PostMapping("/searchclub")

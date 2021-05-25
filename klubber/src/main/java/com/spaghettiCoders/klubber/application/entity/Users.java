@@ -52,7 +52,11 @@ public class Users extends BaseEntity {
     @ManyToMany(mappedBy = "users")
     private List<SubClub> subClubs = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "answer_user",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "answer_id")
+    )
     private List<Answer> answers = new ArrayList<>();
 
     @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL,
