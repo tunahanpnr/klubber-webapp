@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 public class Answer extends BaseEntity {
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Question question;
 
     @Column(name = "answer")
