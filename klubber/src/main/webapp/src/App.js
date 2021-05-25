@@ -14,6 +14,7 @@ import SubClubCreate from "./components/MainPage/Club/ClubCreate/SubClubCreate";
 import Profile from "./components/Profile/Profile";
 import Grids from "./components/Chat/Grids";
 import QuestionnairePage from "./components/MainPage/Club/Questionnaire/QuestionnairePage";
+import SubClub from "./components/MainPage/Club/SubClub";
 
 function App() {
 
@@ -94,6 +95,11 @@ function App() {
                         path={"/QuestionnairePage/:name"}
                         exact={true}
                         component={QuestionnairePage}
+                    />
+                    <Route
+                        path={"/subclub/:name"}
+                        exact={true}
+                        component={SubClub}
                     />
                 </Switch>
             </div>

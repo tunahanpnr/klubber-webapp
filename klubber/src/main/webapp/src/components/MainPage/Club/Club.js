@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {useParams} from "react-router-dom"
-import {Grid, Paper} from "@material-ui/core";
+import {Dialog, DialogActions, DialogContent, DialogTitle, Grid, Paper, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import ClubList from "./Clubs/ClubList";
 import AuthService from "../../../service/auth/AuthService";
 import axios from "axios";
 import DeleteIcon from "@material-ui/icons/Delete";
+import {Alert, AlertTitle} from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
     Club:{
@@ -50,9 +51,22 @@ export default function Club(){
     let { name } = useParams();
 
     const [rows, setRows] = useState([]);
-    const [deleted, setDeleted] = useState(false);
+    const [open, setOpen] = useState(false);
+
 
     const user = AuthService.getCurrentUser();
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleRequest = () => {
+        setOpen(false);
+    }
 
 
     useEffect(() => {
@@ -61,7 +75,7 @@ export default function Club(){
                 console.log(response.data);
                 setRows(response.data);
             })
-    }, [deleted])
+    }, [])
 
     function FormRow() {
         return (
@@ -112,6 +126,7 @@ export default function Club(){
                         <Button
                             variant="contained"
                             color="primary"
+                            onClick={handleClickOpen}
                         >
                             request sub-club
                         </Button>
@@ -126,6 +141,25 @@ export default function Club(){
                 <Grid container item xs={2} spacing={3}>
                 </Grid>
             </Grid>
+
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">{"SUB-CLUB REQUEST"}</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        label="Sub-club name"
+                        fullWidth
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleRequest} color="primary">
+                        Request
+                    </Button>
+
+                </DialogActions>
+            </Dialog>
 
         </div>
 
