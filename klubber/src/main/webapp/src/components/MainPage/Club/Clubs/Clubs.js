@@ -29,6 +29,7 @@ export default function Clubs(props){
 
 
     useEffect(() => {
+        console.log("Club.js")
         axios.get("/listclub")
             .then(response => {
                 console.log("-----")
@@ -45,7 +46,7 @@ export default function Clubs(props){
                 <div>
                     {/*<h2>MY CLUBS</h2>*/}
                     {/*<ClubList rows={rows} setDeleted={setDeleted} deleted={deleted}/>*/}
-                    <h2>AVAİLABLE CLUBS</h2>
+                    <h2>AVAILABLE CLUBS</h2>
                     <ClubJoin rows={rows} setDeleted={setDeleted} deleted={deleted}/>
                 </div>
             )}

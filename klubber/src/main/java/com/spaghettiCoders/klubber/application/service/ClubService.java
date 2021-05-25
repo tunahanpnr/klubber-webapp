@@ -1,9 +1,12 @@
 package com.spaghettiCoders.klubber.application.service;
 
 import com.spaghettiCoders.klubber.application.dto.ClubDTO;
+import com.spaghettiCoders.klubber.application.dto.UserDTO;
 import com.spaghettiCoders.klubber.application.dto.request.JoinClubReqDTO;
 import com.spaghettiCoders.klubber.application.entity.*;
 import com.spaghettiCoders.klubber.application.mapper.ClubMapper;
+import com.spaghettiCoders.klubber.application.mapper.UsersMapper;
+import com.spaghettiCoders.klubber.application.repository.AnswerRepository;
 import com.spaghettiCoders.klubber.application.repository.ClubRepository;
 import com.spaghettiCoders.klubber.application.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +22,9 @@ public class ClubService {
 
     private final ClubRepository clubRepository;
     private final UsersRepository usersRepository;
+    private final AnswerRepository answerRepository;
     private final ClubMapper clubMapper;
+    private final UsersMapper usersMapper;
 
     public String createClub(Club club, String username){
         Users user =  usersRepository.findByUsername(username);
@@ -112,9 +117,22 @@ public class ClubService {
             return "Wrong username!";
 
         Users user = usersRepository.findByUsername(joinclubReqDTO.getUsername());
-        user.getAnswers().addAll(joinclubReqDTO.getAnswers());
+        int score = 0;
+        for (Answer answer:joinclubReqDTO.getAnswers()) {
+            user.getAnswers().add(answerRepository.findById(answer.getId()).get());
+            score+=answer.getScore();
+        }
+        usersRepository.save(user);
 
-        return "Joined club successfully.";
+        if(score > 12){
+            Club club = clubRepository.getClubByName(joinclubReqDTO.getClubname());
+            club.getUsers().add(user);
+            clubRepository.save(club);
+            return "Joined club successfully.";
+        }
+
+
+        return "You fail the questionnaire!";
     }
 
     public String leaveClub(Club club, Users user){
@@ -154,6 +172,13 @@ public class ClubService {
         Pattern pattern = Pattern.compile("[0123456789]");
         Matcher matcher = pattern.matcher(toExamine);
         return matcher.find();
+    }
+
+    public List<UserDTO> getUsers(String clubname) {
+        if(clubRepository.existsClubByName(clubname))
+            return usersMapper.mapToDto(clubRepository.getClubByName(clubname).getUsers());
+
+        return null;
     }
 
     /*public String searchClub(Club club){  TAM İSİM BEKLENMEKSİZİN BENZER İSİMLER İÇEREN KULÜPLERİ GETİRECEK.

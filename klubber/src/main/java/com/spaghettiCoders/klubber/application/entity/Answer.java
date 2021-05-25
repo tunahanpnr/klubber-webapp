@@ -22,10 +22,6 @@ public class Answer extends BaseEntity {
     @Column(name = "score")
     private int score;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name = "answer_user",
-            joinColumns = @JoinColumn(name = "answer_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
+    @ManyToMany(mappedBy = "answers")
     private List<Users> users = new ArrayList<>();
 }

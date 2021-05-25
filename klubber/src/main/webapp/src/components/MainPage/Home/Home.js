@@ -1,29 +1,38 @@
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import RecommendedClubs from "./Home Comps/RecommendedClubs"
 
 const useStyles = makeStyles((theme) => ({
     Home:{
-        backgroundColor:"teal",
+        backgroundColor:"#d6c8ff",
         position:"fixed",
         height:"100%",
         width:"100%",
         zIndex:"1",
-        top:"4.6em",
-        left:"5em",
-        paddingTop:"10px"
-
+        top:"5.2em",
+        left:"7.8em",
+        paddingTop:"10px",
+        borderRadius:"4px",
+        paddingLeft:"8px"
+    },
+    Title:{
+        fontSize:"50px",
     }
 }));
 
 export default function Home(){
+    const classes = useStyles();
+
     return(
-        <div>
-            <h1>
-                HomePage
-                <hr/>
+        <div className={classes.Home}>
+            <h1 className={classes.Title}>
+                Welcome To KLUBBER !
             </h1>
-            <Button href="/club">Go to Club</Button>
+            <RecommendedClubs>
+
+            </RecommendedClubs>
+
         </div>
 
     )

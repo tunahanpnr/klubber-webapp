@@ -70,6 +70,7 @@ export default function Club(){
 
 
     useEffect(() => {
+        console.log("Club")
         axios.get("/listclub")
             .then(response => {
                 console.log(response.data);
