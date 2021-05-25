@@ -14,10 +14,10 @@ import javax.validation.Valid;
 public class QuestionController {
     private final QuestionService questionsService;
 
-    @GetMapping("/getquestions")
+    @GetMapping("/getquestions/{clubName}")
     @PreAuthorize("permitAll()")
-    public String getQuestions(@Valid @RequestBody final Question questions) {
-        return questionsService.getQuestions(questions);
+    public List<Question> getQuestions(@PathVariable String clubName) {
+        return questionsService.getQuestions(clubName);
     }
 
     @PostMapping("/createquestions")
