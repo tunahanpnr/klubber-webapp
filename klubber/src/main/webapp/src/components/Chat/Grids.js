@@ -40,7 +40,7 @@ export default function Grids() {
                 console.log(response.data);
                 setUsers(response.data);
             })
-    }, []);
+    }, [users]);
 
     function listUsers() {
         return (users.map((user) => {

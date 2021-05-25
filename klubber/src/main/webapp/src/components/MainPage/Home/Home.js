@@ -18,9 +18,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home(){
     return(
-        <div className={useStyles().Home}>
+        <div>
             <h1>
                 HomePage
+                <hr/>
             </h1>
             <Button href="/club">Go to Club</Button>
         </div>

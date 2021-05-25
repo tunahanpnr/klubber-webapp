@@ -1,15 +1,20 @@
 package com.spaghettiCoders.klubber.application.service;
 
+import com.spaghettiCoders.klubber.application.entity.Club;
 import com.spaghettiCoders.klubber.application.entity.Question;
 import com.spaghettiCoders.klubber.application.entity.Users;
+import com.spaghettiCoders.klubber.application.repository.ClubRepository;
 import com.spaghettiCoders.klubber.application.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class QuestionService {
     private final QuestionRepository questionsRepository;
+    private final ClubRepository clubRepository;
 
     public String createQuestions(Question questions) {
         questionsRepository.save(questions);
