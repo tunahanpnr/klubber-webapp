@@ -25,8 +25,12 @@ public class QuestionService {
         return "Question has been deleted.";
     }
 
-    public String getQuestions(Question questions) {
-        questionsRepository.findById(questions.getId());
-        return "Question is found. ? ";
+    public List<Question> getQuestions(String clubName) {
+        if(!clubRepository.existsClubByName(clubName))
+            return null;
+
+        Club club = clubRepository.getClubByName(clubName);
+
+        return club.getQuestions();
     }
 }
