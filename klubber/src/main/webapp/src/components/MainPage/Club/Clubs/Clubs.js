@@ -29,6 +29,7 @@ export default function Clubs(props){
 
 
     useEffect(() => {
+        console.log("Club.js")
         axios.get("/listclub")
             .then(response => {
                 console.log("-----")

@@ -34,14 +34,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function QuestionnairePage(){
     const classes = useStyles();
-    const [question, setQuestion] = useState([]);
+    const [questions, setQuestions] = useState()
     let { name } = useParams();
 
     useEffect(() => {
         axios.get("/getquestions/" + name)
             .then(response => {
-                console.log("-----")
+                console.log("/getquestions/" + name)
                 console.log(response.data);
+                setQuestions(response.data)
             })
     }, [])
 
@@ -50,7 +51,7 @@ export default function QuestionnairePage(){
             <form className={classes.form} noValidate>
                 <h1>CLUB NAME:</h1>
                 <h1>{name}</h1>
-                <Questionnaire question={question}/>
+                {questions && <Questionnaire questions={questions} clubname={{name}}/>}
             </form>
         </div>
     )
