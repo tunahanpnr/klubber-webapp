@@ -1,6 +1,7 @@
 package com.spaghettiCoders.klubber.application.service;
 
 import com.spaghettiCoders.klubber.application.dto.ClubDTO;
+import com.spaghettiCoders.klubber.application.dto.request.JoinClubReqDTO;
 import com.spaghettiCoders.klubber.application.entity.*;
 import com.spaghettiCoders.klubber.application.mapper.ClubMapper;
 import com.spaghettiCoders.klubber.application.repository.ClubRepository;
@@ -103,32 +104,15 @@ public class ClubService {
         return clubMapper.mapToDto(clubs);
     }
 
-    public String joinClub(Club club, Users user){
-        List<Users> temporaryClubUsers = club.getUsers();
-        List<Club> temporaryUserClubs = user.getClubs();
-        int userScore = 0;
+    public String joinClub(JoinClubReqDTO joinclubReqDTO){
+        if(!clubRepository.existsClubByName(joinclubReqDTO.getClubname()))
+            return "Wrong class name!";
 
-        for(Answer a: user.getAnswers()){
-            for(Question q: club.getQuestions()){
-                if(q.getQuestion().equals(a.getAnswer())){
-                    userScore += a.getScore();
-                }
-            }
-        }
+        if(!usersRepository.existsByUsername(joinclubReqDTO.getUsername()))
+            return "Wrong username!";
 
-        if(userScore < club.getRequiredScore()){
-
-            return "User cannot join this club due to required score.";
-        }
-        if(temporaryUserClubs.contains(club)){
-            return "User already joined this club.";
-        }
-
-        temporaryClubUsers.add(user);
-        club.setUsers(temporaryClubUsers);
-
-        temporaryUserClubs.add(club);
-        user.setClubs(temporaryUserClubs);
+        Users user = usersRepository.findByUsername(joinclubReqDTO.getUsername());
+        user.getAnswers().addAll(joinclubReqDTO.getAnswers());
 
         return "Joined club successfully.";
     }

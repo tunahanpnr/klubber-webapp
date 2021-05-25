@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 public class Answer extends BaseEntity {
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Question question;
 
     @Column(name = "answer")
@@ -22,7 +22,7 @@ public class Answer extends BaseEntity {
     @Column(name = "score")
     private int score;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinTable(name = "answer_user",
             joinColumns = @JoinColumn(name = "answer_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
