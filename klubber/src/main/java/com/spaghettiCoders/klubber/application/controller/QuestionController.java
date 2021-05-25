@@ -1,5 +1,6 @@
 package com.spaghettiCoders.klubber.application.controller;
 
+import com.spaghettiCoders.klubber.application.dto.QuestionDTO;
 import com.spaghettiCoders.klubber.application.entity.Question;
 import com.spaghettiCoders.klubber.application.entity.Users;
 import com.spaghettiCoders.klubber.application.service.QuestionService;
@@ -17,7 +18,7 @@ public class QuestionController {
 
     @GetMapping("/getquestions/{clubName}")
     @PreAuthorize("permitAll()")
-    public List<Question> getQuestions(@PathVariable String clubName) {
+    public List<QuestionDTO> getQuestions(@PathVariable String clubName) {
         return questionsService.getQuestions(clubName);
     }
 

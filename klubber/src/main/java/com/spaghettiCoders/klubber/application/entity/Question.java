@@ -20,7 +20,6 @@ public class Question extends BaseEntity {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "question_id")
-    @JsonIgnore
     private List<Answer> answers = new ArrayList<>();
 
     @ManyToOne(cascade = {CascadeType.ALL})
