@@ -42,13 +42,13 @@ export default function Question(props) {
                 score: 4
             }, {
                 answer: "",
-                score: 4
+                score: 3
             }, {
                 answer: "",
-                score: 4
+                score: 2
             }, {
                 answer: "",
-                score: 4
+                score: 1
             }]
         }
     )
@@ -60,13 +60,13 @@ export default function Question(props) {
         setQuestions({...question, answers: newAnswers})
     }
 
-    const scoreChangeHandler = (e, i) => {
-        let newAnswers = [...question.answers]; // copying the old datas array
-        newAnswers[i].score = e.target.value; // replace e.target.value with whatever you want to change it to
-
-        setQuestions({...question, answers: newAnswers})
-
-    }
+    // const scoreChangeHandler = (e, i) => {
+    //     let newAnswers = [...question.answers]; // copying the old datas array
+    //     newAnswers[i].score = e.target.value; // replace e.target.value with whatever you want to change it to
+    //
+    //     setQuestions({...question, answers: newAnswers})
+    //
+    // }
 
     const showAnswers = () => {
         return ([1, 2, 3, 4].map((answerId) => {
@@ -94,7 +94,7 @@ export default function Question(props) {
                             label={"Point " + answerId}
                             name={"Point " + answerId}
                             value={question.answers[answerId - 1].score}
-                            onChange={e => scoreChangeHandler(e, answerId - 1)}
+                            //onChange={e => scoreChangeHandler(e, answerId - 1)}
                         />
                     </Grid>
                 </Grid>

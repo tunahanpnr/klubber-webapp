@@ -60,7 +60,7 @@ export default function NavigationBar(props) {
             .then(response => {
                 setClubs(response.data);
             })
-    },)
+    },[])
 
     const renderClubCreateMenu = (
         <Menu
