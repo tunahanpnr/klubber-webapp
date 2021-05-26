@@ -9,7 +9,6 @@ import com.spaghettiCoders.klubber.application.mapper.UsersMapper;
 import com.spaghettiCoders.klubber.application.repository.ClubRepository;
 import com.spaghettiCoders.klubber.application.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +19,8 @@ public class UsersService {
     private final UsersRepository usersRepository;
     private final UsersMapper usersMapper;
 
-    public List<UserDTO> getAllUsers() {
-        return usersMapper.mapToDto(usersRepository.findAll()) ;
+    public List<Users> getAllUsers() {
+        return usersRepository.findAll();
     }
 
     public List<Club> getClubs(String username){
@@ -31,12 +30,33 @@ public class UsersService {
         return null;
     }
 
-    public UserDTO getUser(String username) {
-        Users user = usersRepository.findByUsername(username);
-        if(user ==null){
+    public UserDTO getInfoFromUser(String username) {
+        if(!usersRepository.existsByUsername(username)) {
             return null;
         }
-        UserDTO userDTO = usersMapper.mapToDto(user);
-        return userDTO;
+        Users user = usersRepository.findByUsername(username);
+        return usersMapper.mapToDto(user);
+    }
+
+    public String reportUser(Users user, String username) {
+        if(!usersRepository.existsByUsername(username)) {
+            return "This user can't be found!";
+        }
+        Users toBeReported = usersRepository.findByUsername(username);
+        List<Club> toBeReportedClubs = toBeReported.getClubs();
+
+        int currentReportCount = toBeReported.getReportCount();
+
+        for (Club club: toBeReportedClubs) {
+            if (user.getClubs().contains(club)) {
+                toBeReported.setReportCount(currentReportCount + 1);
+                if (toBeReported.getReportCount() == 5) {
+                    usersRepository.deleteById(toBeReported.getId());
+                    return "Reported user has been banned!";
+                }
+                return "User has been reported!";
+            }
+        }
+        return "User and reported user are not in the same club.";
     }
 }
