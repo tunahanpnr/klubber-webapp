@@ -1,9 +1,13 @@
 package com.spaghettiCoders.klubber.application.service;
 
+import com.spaghettiCoders.klubber.application.dto.request.SubClubCreateReqDTO;
 import com.spaghettiCoders.klubber.application.entity.Rate;
 import com.spaghettiCoders.klubber.application.entity.SubClub;
 import com.spaghettiCoders.klubber.application.entity.Users;
+import com.spaghettiCoders.klubber.application.repository.ClubRepository;
 import com.spaghettiCoders.klubber.application.repository.SubClubRepository;
+import com.spaghettiCoders.klubber.application.repository.UsersRepository;
+import com.spaghettiCoders.klubber.common.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,21 +18,40 @@ import java.util.regex.Pattern;
 @Service
 @RequiredArgsConstructor
 public class SubClubService {
+    private final ClubRepository clubRepository;
     private final SubClubRepository subClubRepository;
+    private final UsersRepository usersRepository;
 
-    public String createSubClub(SubClub subclub, Users user){
-        if(!user.getRole().equals("ADMIN")){
+    public String createSubClub(SubClubCreateReqDTO subclub){
+        if(!usersRepository.existsByUsername(subclub.getCreator()))
+            return "creator not exist!";
 
+        if(!usersRepository.existsByUsername(subclub.getAdmin()))
+            return "creator not exist!";
+
+        Users creator = usersRepository.findByUsername(subclub.getCreator());
+        Users admin = usersRepository.findByUsername(subclub.getAdmin());
+
+        if(!creator.getRole().toString().equals("ADMIN"))
             return "Only users with the role of ADMIN can open a subclub!";
-        }
-        if(subClubRepository.existsSubClubByName(subclub.getName())){
 
+        if(!creator.getRole().toString().equals("ADMIN"))
+            return "Only users with the role of ADMIN can open a subclub!";
+
+        if(!clubRepository.existsClubByName(subclub.getClubName()))
+            return "parent club is not exist!";
+
+        if(subClubRepository.existsSubClubByName(subclub.getSubClubName()))
             return "this subclub is already exist!";
-        }if(containsIllegals(subclub.getName())){
 
+        if(containsIllegals(subclub.getSubClubName()))
             return "SubClub Name can not contain illegal character such as \"@ ? ! | ~ ^ € % &\"";
-        }
-        subClubRepository.save(subclub);
+
+        SubClub newSubClub = new SubClub();
+        newSubClub.setName(subclub.getSubClubName());
+        newSubClub.setAdmin(admin);
+        newSubClub.setClub(clubRepository.getClubByName(subclub.getClubName()));
+        subClubRepository.save(newSubClub);
 
         return "subclub added to the system successfully";
     }

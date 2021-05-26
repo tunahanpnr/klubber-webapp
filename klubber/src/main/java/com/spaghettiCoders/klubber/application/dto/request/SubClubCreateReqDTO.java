@@ -7,7 +7,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ChangePasswordReqDTO {
-    private String oldPassword;
-    private String newPassword;
+public class SubClubCreateReqDTO {
+    String clubName;
+    String subClubName;
+    String creator;
+    String admin;
 }

@@ -4,10 +4,8 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Radio from "@material-ui/core/Radio";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import {Grid, Typography} from "@material-ui/core";
+import {Typography} from "@material-ui/core";
 import axios from "axios";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import AuthService from "../../../../service/auth/AuthService";
 
