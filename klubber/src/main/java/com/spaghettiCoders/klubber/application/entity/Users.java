@@ -60,11 +60,11 @@ public class Users extends BaseEntity {
     private List<Answer> answers = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "user_id")
     private List<Post> postList = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "user_id")
     private List<Rate> rateList = new ArrayList<>();
 
     @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL,

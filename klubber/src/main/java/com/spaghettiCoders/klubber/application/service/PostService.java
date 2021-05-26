@@ -1,10 +1,13 @@
 package com.spaghettiCoders.klubber.application.service;
 
 
+import com.spaghettiCoders.klubber.application.dto.request.CreatePostReqDTO;
 import com.spaghettiCoders.klubber.application.entity.Post;
 import com.spaghettiCoders.klubber.application.entity.SubClub;
 import com.spaghettiCoders.klubber.application.entity.Users;
 import com.spaghettiCoders.klubber.application.repository.PostRepository;
+import com.spaghettiCoders.klubber.application.repository.SubClubRepository;
+import com.spaghettiCoders.klubber.application.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,25 +17,25 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final SubClubRepository subClubRepository;
+    private final UsersRepository usersRepository;
 
-    public String createPost(Users user, SubClub subClub, String content){
-        Post post = new Post();
-        List<Post> usersPostList = user.getPostList();
-        List<Post> subClubPostList = subClub.getPostList();
+    public String createPost(CreatePostReqDTO createPostReqDTO){
+        SubClub subClub = subClubRepository.findByName(createPostReqDTO.getSubClubName());
+        if(subClub == null)
+            return "Subclub doesn't exist!";
 
-        if(!subClub.getUsers().contains(user)){
+        Users user = usersRepository.findByUsername(createPostReqDTO.getUsername());
+        if(user == null)
+            return "User doesn't exist!";
+
+        if(!subClub.getUsers().contains(user))
             return "Only sub club users can send post.";
-        }
 
-        post.setContent(content);
+        Post post = new Post();
         post.setUser(user);
         post.setSubClub(subClub);
-
-        usersPostList.add(post);
-        user.setPostList(usersPostList);
-
-        subClubPostList.add(post);
-        subClub.setPostList(subClubPostList);
+        post.setContent(createPostReqDTO.getContent());
 
         postRepository.save(post);
 

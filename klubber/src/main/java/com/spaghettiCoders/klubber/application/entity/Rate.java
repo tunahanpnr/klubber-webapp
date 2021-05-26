@@ -18,7 +18,7 @@ public class Rate extends BaseEntity {
     private Integer score;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "user_id")
     private Users user;
 
     @ManyToOne(cascade = CascadeType.ALL)
