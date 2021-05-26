@@ -11,6 +11,7 @@ import {Alert, AlertTitle} from "@material-ui/lab";
 import List from "./Clubs/List";
 import TableCell from "@material-ui/core/TableCell";
 import IconButton from "@material-ui/core/IconButton";
+import ListItemText from "@material-ui/core/ListItemText";
 
 const useStyles = makeStyles((theme) => ({
     Club:{
@@ -58,8 +59,6 @@ export default function Club(){
     const [open, setOpen] = useState(false);
 
 
-    const user = AuthService.getCurrentUser();
-
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -84,21 +83,21 @@ export default function Club(){
             })
     }, [])
 
-    function FormRow() {
-        if (isReceived) {
-            return (
-                subClub.map((subClub) => {
-                    return (
-                        <Link to={"/subclub/" + subClub.name}>
-                            {subClub.name}
-                        </Link>
-                    );
-                })
-            );
-        }
-    }
+    // function subClubList() {
+    //     if (isReceived) {
+    //         return (
+    //             subClub.map((subClub) => {
+    //                 return (
+    //                     <Link to={"/subclub/" + name}>
+    //                         {name}
+    //                     </Link>
+    //                 );
+    //             })
+    //         );
+    //     }
+    // }
 
-    function subClubList() {
+    function FormRow() {
         return (
             <React.Fragment>
                 <Grid item xs={12}>
@@ -120,11 +119,14 @@ export default function Club(){
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
                         <div >
-                            <List >
-                                <ListItem>
-                                    {subClubList()}
-                                </ListItem>
-                            </List>
+
+                            {subClub.map((subClub) => {
+                                return (
+                                    <Link to={"/subclub/" + subClub.name}>
+                                        {subClub.name}
+                                    </Link>
+                                );
+                            })}
                         </div>
                     </Paper>
                 </Grid>
