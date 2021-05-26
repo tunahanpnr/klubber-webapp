@@ -14,8 +14,6 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
 
     @Query("select club from Club club")
     List<Club> getClubs();
-    
-
 
 }
 
