@@ -8,15 +8,15 @@ import axios from "axios";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
-    Club:{
-        backgroundColor:"#eeead1",
-        position:"fixed",
-        height:"100%",
-        width:"100%",
-        zIndex:"1",
-        top:"4.6em",
-        left:"7.2em",
-        paddingTop:"10px",
+    Club: {
+        backgroundColor: "#eeead1",
+        position: "fixed",
+        height: "100%",
+        width: "100%",
+        zIndex: "1",
+        top: "4.6em",
+        left: "7.2em",
+        paddingTop: "10px",
         flexGrow: 1,
 
     },
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.text.secondary,
     },
     subclub: {
-        display:"grid",
+        display: "grid",
         gridRowGap: "25px",
 
     },
@@ -44,10 +44,22 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function SubClub(){
+export default function SubClub(props) {
     const classes = useStyles();
-    let { name } = useParams();
+    const [currentUser] = useState(AuthService.getCurrentUser());
+    const [content, setContent] = useState("");
     const [open, setOpen] = useState(false);
+    const [posts, setPosts] = useState();
+
+    useEffect(() => {
+        axios.get("/getposts/" + props.post.subClubName)
+            .then(response => {
+                console.log("-----")
+                console.log(response.data);
+                setPosts(response.data)
+            })
+    }, []);
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -57,7 +69,22 @@ export default function SubClub(){
         setOpen(false);
     };
 
+    const handleChangeContent = (cont) => {
+        setContent(cont.target.value);
+    };
+
     const handleRequest = () => {
+        const newPost = {
+            content: content,
+            username: currentUser.username,
+            subClubName: props.subClubName
+        }
+
+        axios.post("/createpost", newPost).then((response) => {
+            console.log(response.data)
+            setPosts(posts => [...posts, newPost]);
+        })
+
         setOpen(false);
     }
 
@@ -81,7 +108,7 @@ export default function SubClub(){
         return (
             <React.Fragment>
                 <Grid item xs={12}>
-                    <h1> SUB-CLUB: {name}</h1>
+                    <h1> SUB-CLUB: {props.subClubName}</h1>
                 </Grid>
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
@@ -92,21 +119,21 @@ export default function SubClub(){
         );
     }
 
-    return(
+    return (
         <div className={classes.Club}>
             <Grid container spacing={3}>
 
-                <Grid item xs={9} >
+                <Grid item xs={9}>
                     <FormRowPost/>
                 </Grid>
 
 
-                <Grid item xs={2} >
+                <Grid item xs={2}>
                     <div className={classes.button}>
                         <Button
                             variant="contained"
                             color="secondary"
-                            startIcon={<DeleteIcon />}
+                            startIcon={<DeleteIcon/>}
                         >
                             leave
                         </Button>
@@ -117,7 +144,7 @@ export default function SubClub(){
                         >
                             POST
                         </Button>
-                        <FormRow />
+                        <FormRow/>
 
                     </div>
                 </Grid>
@@ -134,6 +161,8 @@ export default function SubClub(){
                             id="post"
                             label="Post"
                             fullWidth
+                            value={content}
+                            onChange={handleChangeContent}
                         />
                     </DialogContent>
                     <DialogActions>

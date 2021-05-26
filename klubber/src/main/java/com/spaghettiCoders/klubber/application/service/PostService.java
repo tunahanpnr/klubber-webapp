@@ -73,6 +73,14 @@ public class PostService {
         return postRepository.getOne(postId);
     }
 
+    public List<Post> getPosts(String subClubName){
+        SubClub subClub = subClubRepository.findByName(subClubName);
+        if(subClub == null)
+            return null;
+
+        return subClub.getPostList();
+    }
+
     public String deletePost(Users user, SubClub subClub, Long postId){
         /*List<Post> usersPostList = user.getPost();
         List<Post> subClubPostList = subClub.getPostList();*/

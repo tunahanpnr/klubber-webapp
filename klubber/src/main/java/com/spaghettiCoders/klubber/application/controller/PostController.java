@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @RestController
@@ -33,6 +34,12 @@ public class PostController {
     @PreAuthorize("permitAll()")
     public Post getPost(@Valid @RequestBody final Long postId) {
         return postService.getPost(postId);
+    }
+
+    @GetMapping("/getPosts/{subClubName")
+    @PreAuthorize("permitAll()")
+    public List<Post> getPost(@PathVariable String subClubName) {
+        return postService.getPosts(subClubName);
     }
 
     @DeleteMapping("/deletepost")
