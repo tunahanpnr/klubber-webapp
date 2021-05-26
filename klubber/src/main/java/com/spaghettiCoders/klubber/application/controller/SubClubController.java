@@ -24,11 +24,17 @@ public class SubClubController {
         return subClubService.createSubClub(subclub);
     }
 
-    @DeleteMapping("/deletesubclub/{id}")
+    @DeleteMapping("/deletesubclub/{name}/{username}")
     @PreAuthorize("permitAll()")
-    public String deleteSubClub(final Users user, @PathVariable Long id) {
-        return subClubService.deleteSubClub(user, id);
+    public String deleteSubClub(@PathVariable String username, @PathVariable String name) {
+        return subClubService.deleteSubClub(username, name);
     }
+
+//    @DeleteMapping("/deletesubclub/{id}")
+//    @PreAuthorize("permitAll()")
+//    public String deleteSubClub(final Users user, @PathVariable Long id) {
+//        return subClubService.deleteSubClub(user, id);
+//    }
 
 //    @GetMapping("/listsubclub")
 //    @PreAuthorize("permitAll()")

@@ -19,6 +19,10 @@ import Table from "@material-ui/core/Table";
 import TableRow from "@material-ui/core/TableRow";
 import TableBody from "@material-ui/core/TableBody";
 import TableHead from "@material-ui/core/TableHead";
+import SubClubListAdmin from "./ClubPage/SubClubListAdmin";
+import SubClubListMember from "./ClubPage/SubClubListMember";
+import AdminButton from "./ClubPage/AdminButton";
+import MemberButon from "./ClubPage/MemberButon";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -73,6 +77,11 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
+const columns = [
+    {id: 'name', label: 'Name', minWidth: 170},
+    {id: 'delete', label: 'Delete', minWidth: 100},
+];
+
 export default function Club(){
     const classes = useStyles();
     let { name } = useParams();
@@ -82,6 +91,7 @@ export default function Club(){
     const [isReceived, setIsReceived] = useState(false);
     const [open, setOpen] = useState(false);
     const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
+    const [deleted, setDeleted] = useState(false);
 
 
     const handleClickOpen = () => {
@@ -94,17 +104,6 @@ export default function Club(){
 
     const handleRequest = () => {
         setOpen(false);
-    }
-
-
-    const handleLeave = () => {
-        console.log("leave")
-        console.log(name)
-        console.log(currentUser.username)
-        axios.post("/leaveclub/" + name + "/" + currentUser.username)
-            .then(response => {
-                console.log(response.data);
-            })
     }
 
     useEffect(() => {
@@ -126,37 +125,16 @@ export default function Club(){
                 console.log(response.data);
                 setSubClubUser(response.data);
             })
-    }, [])
+    }, [deleted])
 
-    function SubClubList() {
-        return (
-            <React.Fragment>
-                <Paper className={classes.root}>
-                    <TableContainer className={classes.container}>
-                        <Table aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>
-                                        SUBCLUB NAME
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {subClub.map((row) => (
-                                    <TableCell key={row.name}>
-                                        <TableRow key={row.name}>
-                                            <Link to={"/subclub/" + row.name}>
-                                                {row.name}
-                                            </Link>
-                                        </TableRow>
-                                    </TableCell>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </Paper>
-            </React.Fragment>
-        );
+    const handleUpdateName = () => {
+        console.log("update")
+        console.log(name)
+        console.log(currentUser.username)
+        axios.post("/leaveclub/" + name + "/" + currentUser.username)
+            .then(response => {
+                console.log(response.data);
+            })
     }
 
     function SubClubUserList() {
@@ -210,7 +188,10 @@ export default function Club(){
                     <h1> CLUB: {name}</h1>
                 </Grid>
                 <Grid item xs={12}>
-                    <SubClubList/>
+                    {(currentUser.role === "ADMIN") ?
+                        <SubClubListAdmin subClub={subClub} setDeleted={setDeleted} deleted={deleted}/> :
+                        <SubClubListMember subClub={subClub} />
+                    }
                 </Grid>
             </React.Fragment>
         );
@@ -226,21 +207,10 @@ export default function Club(){
 
                 <Grid item xs={2} >
                     <div className={classes.button}>
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            startIcon={<DeleteIcon />}
-                            onClick={handleLeave}
-                        >
-                            leave
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={handleClickOpen}
-                        >
-                            request sub-club
-                        </Button>
+                        {(currentUser.role === "ADMIN") ?
+                            <AdminButton name={name}/> :
+                            <MemberButon name={name}/>
+                        }
                         <FormRow />
 
                     </div>
@@ -249,26 +219,6 @@ export default function Club(){
                 <Grid container item xs={2} spacing={3}>
                 </Grid>
             </Grid>
-
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">{"SUB-CLUB REQUEST"}</DialogTitle>
-                <DialogContent>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="Sub-club name"
-                        fullWidth
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleRequest} color="primary">
-                        Request
-                    </Button>
-
-                </DialogActions>
-            </Dialog>
-
         </div>
 
     )
