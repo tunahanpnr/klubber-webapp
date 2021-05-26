@@ -7,6 +7,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ClubDTO {
+public class SubClubDTO {
     private String name;
+    private String admin;
+    private String clubName;
 }
