@@ -81,10 +81,8 @@ export default function Club(){
     const [subClubUser, setSubClubUser] = useState([]);
     const [isReceived, setIsReceived] = useState(false);
     const [open, setOpen] = useState(false);
-    const [leaveClubForm, setLeaveClubForm] = useState({
-        name: "",
-        user: AuthService.getCurrentUser()
-    })
+    const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -98,8 +96,9 @@ export default function Club(){
         setOpen(false);
     }
 
+    
     const handleLeave = () => {
-        axios.get("/leaveclub/" + name)
+        axios.get("/leaveclub/" + name + "/" + currentUser.username)
             .then(response => {
                 console.log(response.data);
                 setSubClub(response.data);
