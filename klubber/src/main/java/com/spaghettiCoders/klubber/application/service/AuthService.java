@@ -42,6 +42,7 @@ public class AuthService {
         newUser.setVerificationCode(randomCode);
         newUser.setEnabled(false);
         newUser.setRole(Role.MEMBER);
+        newUser.setReportCount(0);
 
         usersRepository.save(newUser);
 
