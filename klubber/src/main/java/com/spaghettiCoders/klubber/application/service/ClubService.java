@@ -117,6 +117,16 @@ public class ClubService {
             return "Wrong username!";
 
         Users user = usersRepository.findByUsername(joinclubReqDTO.getUsername());
+        if (user == null)
+            return "user not exist";
+
+        Club club = clubRepository.getClubByName(joinclubReqDTO.getClubname());
+        if(club == null)
+            return "club not exist";
+
+        if(club.getUsers().contains(user))
+            return "already joined";
+
         int score = 0;
         for (Answer answer:joinclubReqDTO.getAnswers()) {
             user.getAnswers().add(answerRepository.findById(answer.getId()).get());
@@ -125,7 +135,6 @@ public class ClubService {
         usersRepository.save(user);
 
         if(score > 12){
-            Club club = clubRepository.getClubByName(joinclubReqDTO.getClubname());
             club.getUsers().add(user);
             clubRepository.save(club);
             return "Joined club successfully.";
