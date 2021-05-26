@@ -66,12 +66,14 @@ public class ClubService {
         return "club deleted from the system successfully";
     }
 
-    public String updateClubName(Club club, Users user, String newName){
+    public String updateClubName(ClubDTO club, String name, String username ){
+        Users user = usersRepository.findByUsername(username);
+
         if(!user.getRole().toString().equals("ADMIN")){
 
             return "Only users with the role of ADMIN can open a club!";
         }
-        if(clubRepository.existsClubByName(newName)) {
+        if(clubRepository.existsClubByName(club.getName())) {
 
             return "this club is already exist!";
         }
@@ -80,8 +82,10 @@ public class ClubService {
 
             return "Club Name can not contain illegal character such as \"@ ? ! | ~ ^ € % &\"";
         }
-        club.setName(newName);
+        Club newclub = clubRepository.getClubByName(name);
 
+        newclub.setName(club.getName());
+        clubRepository.save(newclub);
         return "Club updated sucessfully.";
     }
 

@@ -38,10 +38,16 @@ public class ClubController {
     }
 
 
-    @PostMapping("/updateclubname")
+//    @PostMapping("/updateclubname")
+//    @PreAuthorize("permitAll()")
+//    public String updateClubName(@Valid @RequestBody final Club club, final Users user, final String newName) {
+//        return clubService.updateClubName(club, user, newName);
+//    }
+
+    @PostMapping("/updateclub/{name}/{username}")
     @PreAuthorize("permitAll()")
-    public String updateClubName(@Valid @RequestBody final Club club, final Users user, final String newName) {
-        return clubService.updateClubName(club, user, newName);
+    public String updateClubName(@Valid @RequestBody final ClubDTO club, @PathVariable String name, @PathVariable String username) {
+        return clubService.updateClubName(club, name, username);
     }
 
     @PostMapping("/updateclubid/{id}")
