@@ -5,7 +5,7 @@ import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import {Container} from "@material-ui/core";
+import {Container, makeStyles} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -18,19 +18,40 @@ import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
 import MenuItem from '@material-ui/core/MenuItem';
 import {Button} from "@material-ui/core";
 import axios from "axios";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import { TextField } from '@material-ui/core';
+import {Link as Link} from "react-router-dom";
 
 
+const useStyles = makeStyles((theme) => ({
 
+    Search:{
+        backgroundColor:"white",
+        borderRadius:"10px",
+        marginLeft:"20px",
+        minWidth:"30%"
+
+    }
+}));
 
 
 
 
 
 export default function NavigationBar(props) {
+    const classes2 = useStyles();
     const classes = props.style;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [CCanchorEl, setCCAnchorEl] = React.useState(null);
     const [clubs, setClubs] = useState([]);
+    const [users, setUsers] = useState([]);
+    const [usersClubs, setUsersClubs] = useState([]);
+    const [searchables,setSearchables] = useState([]);
+
+    const defaultProps = {
+        options: searchables,
+        getOptionLabel: (option) => option.name,
+    };
 
 
     const handleClick = (event) => {
@@ -55,12 +76,47 @@ export default function NavigationBar(props) {
         setCCAnchorEl(null);
     };
 
+    const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
+
     useEffect(() => {
         axios.get("/listclub")
             .then(response => {
                 setClubs(response.data);
+                console.log("FETCH CLUBS: " , response.data)
+
+                /*let temp = clubs.concat(users)
+                setUsersClubs(temp);*/
             })
     },[])
+
+    useEffect(() => {
+        axios.get("/fetchusers")
+            .then(response => {
+                setUsers(response.data);
+                console.log("FETCH USERS: ",response.data)
+
+                /*let temp = clubs.concat(users)
+                setUsersClubs(temp);*/
+            })
+    },[])
+
+    useEffect( () => {
+        setSearchables([])
+        console.log(clubs,"  xxx ",users)
+        for(let i=0;i<clubs.length; i++){
+            let searchableObj = {type:"club",name: clubs[i].name}
+            setSearchables(searchables => [...searchables,searchableObj])
+        }
+
+        for(let i=0;i<users.length; i++){
+            let searchableObj = {type:"user",name: users[i].name}
+            setSearchables(searchables => [...searchables,searchableObj])
+        }
+
+    },[users,clubs])
+
+
+
 
     const renderClubCreateMenu = (
         <Menu
@@ -83,25 +139,38 @@ export default function NavigationBar(props) {
         </Menu>
     );
 
+
     return (
         <div className={classes.root}>
             <CssBaseline />
 
             <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
-                    </div>
+                    <Autocomplete
+                        className={classes2.Search}
+                        id="search"
+                        {...defaultProps}
+                        getOptionLabel={(option) => option.name}
+                        renderOption={(option) => (
+                            <React.Fragment>
+                                <span
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => {
+
+                                        if(option.type === "club"){
+                                            window.location.href = "/club/"+option.name;
+                                        }else if(option.type === "user"){
+                                            window.location.href = "/profile/"+option.name;
+                                        }
+
+                                    }}
+                                >
+                                  {option.name+"    :"+option.type}
+                                </span>
+                            </React.Fragment>
+                        )}
+                        renderInput={(params) => <TextField {...params} label="Search for members&clubs" variant="outlined" />}
+                    />
                     <IconButton className={classes.createClub}
                                 edge="end"
                                 aria-label="club create button"
@@ -131,7 +200,7 @@ export default function NavigationBar(props) {
                                 onClose={handleClose}
                             >
                                 <MenuItem onClick={handleClose}>
-                                    <Button href="/profile">
+                                    <Button href={"/profile/"+currentUser.name}>
                                         Profile
                                     </Button>
                                 </MenuItem>

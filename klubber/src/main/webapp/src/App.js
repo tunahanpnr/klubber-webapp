@@ -29,7 +29,7 @@ function App() {
         }
     }, []);
 
-    let appBar = currentUser ? <Route component={AppBar}/> : null;
+    let appBar = currentUser ? <Route  component={AppBar}/> : null;
     let protect = currentUser ? null : <Route path={"/"} component={Login}/>;
 
 
@@ -58,13 +58,11 @@ function App() {
                         path={"/clubs"}
                         exact={true}
                         component={Clubs}
-                        setUsername={setUsername}
                     />
                     <Route
                         path={"/club/:name"}
                         exact={true}
                         component={Club}
-                        username={username}
                     />
                     <Route
                         path={"/clubSearch"}
@@ -77,9 +75,9 @@ function App() {
                         component={ClubCreate}
                     />
                     <Route
-                        path={"/profile"}
+                        path={"/profile/:name"}
                         exact={true}
-                        component={Profile}
+                        component={ () => <Profile cu={currentUser}/>}
                     />
                     <Route
                         path={"/chat"}
