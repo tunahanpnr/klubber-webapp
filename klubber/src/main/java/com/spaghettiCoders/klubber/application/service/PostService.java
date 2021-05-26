@@ -1,7 +1,7 @@
 package com.spaghettiCoders.klubber.application.service;
 
 
-import com.spaghettiCoders.klubber.application.dto.request.CreatePostReqDTO;
+import com.spaghettiCoders.klubber.application.dto.PostDTO;
 import com.spaghettiCoders.klubber.application.entity.Post;
 import com.spaghettiCoders.klubber.application.entity.SubClub;
 import com.spaghettiCoders.klubber.application.entity.Users;
@@ -11,6 +11,7 @@ import com.spaghettiCoders.klubber.application.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,12 +21,12 @@ public class PostService {
     private final SubClubRepository subClubRepository;
     private final UsersRepository usersRepository;
 
-    public String createPost(CreatePostReqDTO createPostReqDTO){
-        SubClub subClub = subClubRepository.findByName(createPostReqDTO.getSubClubName());
+    public String createPost(PostDTO postDTO){
+        SubClub subClub = subClubRepository.findByName(postDTO.getSubClubName());
         if(subClub == null)
             return "Subclub doesn't exist!";
 
-        Users user = usersRepository.findByUsername(createPostReqDTO.getUsername());
+        Users user = usersRepository.findByUsername(postDTO.getUsername());
         if(user == null)
             return "User doesn't exist!";
 
@@ -35,7 +36,7 @@ public class PostService {
         Post post = new Post();
         post.setUser(user);
         post.setSubClub(subClub);
-        post.setContent(createPostReqDTO.getContent());
+        post.setContent(postDTO.getContent());
 
         postRepository.save(post);
 
@@ -71,6 +72,23 @@ public class PostService {
             return null;
         }
         return postRepository.getOne(postId);
+    }
+
+    public List<PostDTO> getPosts(String subClubName){
+        SubClub subClub = subClubRepository.findByName(subClubName);
+        if(subClub == null)
+            return null;
+        List<PostDTO> postDTOS = new ArrayList<>();
+
+        for (Post post:subClub.getPostList()) {
+            PostDTO postDTO = new PostDTO();
+            postDTO.setContent(post.getContent());
+            postDTO.setUsername(post.getUser().getUsername());
+            postDTO.setSubClubName(post.getSubClub().getName());
+            postDTOS.add(postDTO);
+        }
+
+        return postDTOS;
     }
 
     public String deletePost(Users user, SubClub subClub, Long postId){

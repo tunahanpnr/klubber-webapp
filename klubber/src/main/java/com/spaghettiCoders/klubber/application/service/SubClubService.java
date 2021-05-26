@@ -1,17 +1,19 @@
 package com.spaghettiCoders.klubber.application.service;
 
+import com.spaghettiCoders.klubber.application.dto.SubClubDTO;
 import com.spaghettiCoders.klubber.application.dto.request.SubClubCreateReqDTO;
-import com.spaghettiCoders.klubber.application.entity.Rate;
+import com.spaghettiCoders.klubber.application.entity.Club;
 import com.spaghettiCoders.klubber.application.entity.SubClub;
 import com.spaghettiCoders.klubber.application.entity.Users;
 import com.spaghettiCoders.klubber.application.repository.ClubRepository;
 import com.spaghettiCoders.klubber.application.repository.SubClubRepository;
 import com.spaghettiCoders.klubber.application.repository.UsersRepository;
-import com.spaghettiCoders.klubber.common.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,6 +23,7 @@ public class SubClubService {
     private final ClubRepository clubRepository;
     private final SubClubRepository subClubRepository;
     private final UsersRepository usersRepository;
+
 
     public String createSubClub(SubClubCreateReqDTO subclub){
         if(!usersRepository.existsByUsername(subclub.getCreator()))
@@ -48,7 +51,7 @@ public class SubClubService {
             return "SubClub Name can not contain illegal character such as \"@ ? ! | ~ ^ € % &\"";
 
         SubClub newSubClub = new SubClub();
-        newSubClub.setName(subclub.getSubClubName());
+        newSubClub.setName(subclub.getSubClubName().toLowerCase());
         newSubClub.setAdmin(admin);
         newSubClub.setClub(clubRepository.getClubByName(subclub.getClubName()));
         subClubRepository.save(newSubClub);
@@ -110,9 +113,26 @@ public class SubClubService {
         return "SubClub updated sucessfully.";
     }
 
-    public List<SubClub> listSubClub(String clubName){
-        return subClubRepository.getSubClub(clubName);
+    public List<SubClubDTO> listSubClub(String clubName){
+        Club club = clubRepository.getClubByName(clubName);
+        if(club == null)
+            return null;
+
+        List<SubClubDTO> subclubs = new ArrayList<>();
+        for (SubClub s: club.getSubClubs()) {
+            SubClubDTO subClubDTO = new SubClubDTO();
+            subClubDTO.setAdmin(s.getAdmin().getUsername());
+            subClubDTO.setName(s.getName());
+            subClubDTO.setClubName(clubName);
+            subclubs.add(subClubDTO);
+        }
+        return subclubs;
     }
+
+//    public List<ClubDTO> listClub(){
+//        List<Club> clubs = clubRepository.getClubs();
+//        return clubMapper.mapToDto(clubs);
+//    }
 
     public String joinSubClub(SubClub subclub, Users user){
         List<Users> temporaryClubUsers = subclub.getClub().getUsers();

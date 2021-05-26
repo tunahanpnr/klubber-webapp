@@ -56,10 +56,10 @@ public class ClubController {
         return clubService.joinClub(joinclubReqDTO);
     }
 
-    @PostMapping("/leaveclub")
+    @PostMapping("/leaveclub/{clubname}/{username}")
     @PreAuthorize("permitAll()")
-    public String leaveClub(@Valid @RequestBody final Club club, final Users user){
-        return clubService.leaveClub(club, user);
+    public String leaveClub(@PathVariable String clubname, @PathVariable String username){
+        return clubService.leaveClub(clubname, username);
     }
 
     @GetMapping("/getclubusers/{clubname}")

@@ -65,7 +65,7 @@ export default function List(props,{setUsername}) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {props.rows.map((row) => {
+                        {props.rows && props.rows.map((row) => {
                             return (
                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                                     {columns.map((column) => {

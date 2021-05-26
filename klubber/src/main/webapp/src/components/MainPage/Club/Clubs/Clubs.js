@@ -5,7 +5,7 @@ import axios from "axios";
 import ClubList from "./ClubList";
 import ClubJoin from "./ClubJoin";
 import AuthService from "../../../../service/auth/AuthService";
-import Post from "../../../Post/Post";
+import PostCard from "../../../Post/PostCard";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -30,7 +30,6 @@ export default function Clubs(props){
 
 
     useEffect(() => {
-        console.log("Club.js")
         axios.get("/listclub")
             .then(response => {
                 console.log("-----")
@@ -51,7 +50,7 @@ export default function Clubs(props){
                     <ClubJoin rows={rows} setDeleted={setDeleted} deleted={deleted}/>
                 </div>
             )}
-            <Post/>
+            {/*<PostCard/>*/}
         </div>
     )
 }
