@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import AuthService from "../../service/auth/AuthService";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
+import {useParams} from "react-router-dom"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,7 +39,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Profile() {
+export default function Profile(props) {
+
+    let { name } = useParams();
+    console.log(name);
     const classes = useStyles();
 
     const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
@@ -83,73 +87,62 @@ export default function Profile() {
             });
     }
 
+    if( currentUser.name === name ){
+        return (
+            <Container component="main" maxWidth="xs">
+                <CssBaseline/>
+                <div className={classes.paper}>
+                    <Typography component="h1" variant="h5">
+                        My Profile
+                    </Typography>
 
-    return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline/>
-            <div className={classes.paper}>
-                <Typography component="h1" variant="h5">
-                    My Profile
-                </Typography>
-                <form className={classes.form}>
-                    {!passEnable && <div><TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="name"
-                        label="Name"
-                        name="name"
-                        autoFocus
-                        value={updatedUser.name}
-                        onChange={e => setUpdatedUser({...updatedUser, name: e.target.value})}
-                    />
-                        <TextField
+                    <form className={classes.form}>
+                        {!passEnable && <div><TextField
                             variant="outlined"
                             margin="normal"
                             required
                             fullWidth
-                            id="surname"
-                            label="Surname"
-                            name="surname"
-                            value={updatedUser.surname}
-                            onChange={e => setUpdatedUser({...updatedUser, surname: e.target.value})}
+                            id="name"
+                            label="Name"
+                            name="name"
+                            autoFocus
+                            value={updatedUser.name}
+                            onChange={e => setUpdatedUser({...updatedUser, name: e.target.value})}
                         />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="username"
-                            label="Username"
-                            name="username"
-                            value={updatedUser.username}
-                            onChange={e => setUpdatedUser({...updatedUser, username: e.target.value})}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="E-mail"
-                            name="email"
-                            value={updatedUser.email}
-                            onChange={e => setUpdatedUser({...updatedUser, email: e.target.value})}
-                        /></div>}
-                    {passEnable && <div><TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="Old Password"
-                        label="Old Password"
-                        type="Old Password"
-                        id="Old Password"
-                        value={changePass.oldPassword}
-                        onChange={e => setChangePass({...changePass, oldPassword: e.target.value})}
-                    />
-                        <TextField
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="surname"
+                                label="Surname"
+                                name="surname"
+                                value={updatedUser.surname}
+                                onChange={e => setUpdatedUser({...updatedUser, surname: e.target.value})}
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="username"
+                                label="Username"
+                                name="username"
+                                value={updatedUser.username}
+                                onChange={e => setUpdatedUser({...updatedUser, username: e.target.value})}
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="E-mail"
+                                name="email"
+                                value={updatedUser.email}
+                                onChange={e => setUpdatedUser({...updatedUser, email: e.target.value})}
+                            /></div>}
+                        {passEnable && <div><TextField
                             variant="outlined"
                             margin="normal"
                             required
@@ -158,48 +151,182 @@ export default function Profile() {
                             label="Old Password"
                             type="Old Password"
                             id="Old Password"
-                            value={changePass.newPassword}
-                            onChange={e => setChangePass({...changePass, newPassword: e.target.value})}
-                        /></div>}
-                    {!passEnable && <Button
-                        onClick={postUpdateUser}
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.signIn}
-                    >
-                        Update Profile
-                    </Button>}
-                    {!passEnable && <Button
-                        onClick={() => setPassEnable(true)}
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.signUp}
-                    >
-                        Change Password Fields
-                    </Button>}
+                            value={changePass.oldPassword}
+                            onChange={e => setChangePass({...changePass, oldPassword: e.target.value})}
+                        />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="Old Password"
+                                label="Old Password"
+                                type="Old Password"
+                                id="Old Password"
+                                value={changePass.newPassword}
+                                onChange={e => setChangePass({...changePass, newPassword: e.target.value})}
+                            /></div>}
+                        {!passEnable && <Button
+                            onClick={postUpdateUser}
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.signIn}
+                        >
+                            Update Profile
+                        </Button>}
+                        {!passEnable && <Button
+                            onClick={() => setPassEnable(true)}
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.signUp}
+                        >
+                            Change Password Fields
+                        </Button>}
 
-                    {passEnable && <Button
-                        onClick={postChangePassword}
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.signIn}
-                    >
-                        Change My Password
-                    </Button>}
-                    {passEnable && <Button
-                        onClick={() => setPassEnable(false)}
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.signUp}
-                    >
-                        Cancel Change Password
-                    </Button>}
-                </form>
-            </div>
-        </Container>
-    )
+                        {passEnable && <Button
+                            onClick={postChangePassword}
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.signIn}
+                        >
+                            Change My Password
+                        </Button>}
+                        {passEnable && <Button
+                            onClick={() => setPassEnable(false)}
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.signUp}
+                        >
+                            Cancel Change Password
+                        </Button>}
+                    </form>
+                </div>
+            </Container>
+        )
+    }else{
+        return(
+            <Container component="main" maxWidth="xs">
+                <CssBaseline/>
+                <div className={classes.paper}>
+                    <Typography component="h1" variant="h5">
+                        {name+"'s Profile"}
+                    </Typography>
+
+                    <form className={classes.form}>
+                        {!passEnable && <div><TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="name"
+                            label="Name"
+                            name="name"
+                            autoFocus
+                            value={updatedUser.name}
+                            onChange={e => setUpdatedUser({...updatedUser, name: e.target.value})}
+                        />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="surname"
+                                label="Surname"
+                                name="surname"
+                                value={updatedUser.surname}
+                                onChange={e => setUpdatedUser({...updatedUser, surname: e.target.value})}
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="username"
+                                label="Username"
+                                name="username"
+                                value={updatedUser.username}
+                                onChange={e => setUpdatedUser({...updatedUser, username: e.target.value})}
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="E-mail"
+                                name="email"
+                                value={updatedUser.email}
+                                onChange={e => setUpdatedUser({...updatedUser, email: e.target.value})}
+                            /></div>}
+                        {passEnable && <div><TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="Old Password"
+                            label="Old Password"
+                            type="Old Password"
+                            id="Old Password"
+                            value={changePass.oldPassword}
+                            onChange={e => setChangePass({...changePass, oldPassword: e.target.value})}
+                        />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="Old Password"
+                                label="Old Password"
+                                type="Old Password"
+                                id="Old Password"
+                                value={changePass.newPassword}
+                                onChange={e => setChangePass({...changePass, newPassword: e.target.value})}
+                            /></div>}
+                        {!passEnable && <Button
+                            onClick={postUpdateUser}
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.signIn}
+                        >
+                            Update Profile
+                        </Button>}
+                        {!passEnable && <Button
+                            onClick={() => setPassEnable(true)}
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.signUp}
+                        >
+                            Change Password Fields
+                        </Button>}
+
+                        {passEnable && <Button
+                            onClick={postChangePassword}
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.signIn}
+                        >
+                            Change My Password
+                        </Button>}
+                        {passEnable && <Button
+                            onClick={() => setPassEnable(false)}
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.signUp}
+                        >
+                            Cancel Change Password
+                        </Button>}
+                    </form>
+                </div>
+            </Container>
+        )
+    }
+
 }
