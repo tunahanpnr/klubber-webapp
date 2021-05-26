@@ -1,7 +1,8 @@
 
 package com.spaghettiCoders.klubber.application.controller;
 
-import com.spaghettiCoders.klubber.application.entity.Club;
+import com.spaghettiCoders.klubber.application.dto.SubClubDTO;
+import com.spaghettiCoders.klubber.application.dto.request.SubClubCreateReqDTO;
 import com.spaghettiCoders.klubber.application.entity.SubClub;
 import com.spaghettiCoders.klubber.application.entity.Users;
 import com.spaghettiCoders.klubber.application.service.SubClubService;
@@ -19,8 +20,8 @@ public class SubClubController {
 
     @PostMapping("/createsubclub")
     @PreAuthorize("permitAll()")
-    public String createSubClub(@Valid @RequestBody final SubClub subclub, final Users user) {
-        return subClubService.createSubClub(subclub, user);
+    public String createSubClub(@Valid @RequestBody final SubClubCreateReqDTO subclub) {
+        return subClubService.createSubClub(subclub);
     }
 
     @DeleteMapping("/deletesubclub/{id}")
@@ -29,11 +30,20 @@ public class SubClubController {
         return subClubService.deleteSubClub(user, id);
     }
 
-    @GetMapping("/listsubclub")
+//    @GetMapping("/listsubclub")
+//    @PreAuthorize("permitAll()")
+//    public List<SubClub> listSubClub(@Valid @RequestBody final String clubName){
+//        return subClubService.listSubClub(clubName);
+//    }
+
+    @GetMapping("/listsubclub/{clubName}")
     @PreAuthorize("permitAll()")
-    public List<SubClub> listSubClub(@Valid @RequestBody final String clubName){
+    public List<SubClubDTO> listSubClub(@PathVariable String clubName){
         return subClubService.listSubClub(clubName);
     }
+//    public List<ClubDTO> listClub() {
+//        return clubService.listClub();
+//    }
 
 
     @PostMapping("/joinsubclub")

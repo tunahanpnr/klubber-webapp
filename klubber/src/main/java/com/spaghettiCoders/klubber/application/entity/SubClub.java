@@ -18,14 +18,24 @@ public class SubClub extends BaseEntity {
     @NonNull
     private String name;
 
+    @Column(name = "average_score")
+    private Double averageScore = 0.0;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id")
     private Users admin;
 
-
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "club_id")
     private Club club;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "subclub_id")
+    private List<Post> postList = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "subclub_id")
+    private List<Rate> rateList = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "subclub_user",
