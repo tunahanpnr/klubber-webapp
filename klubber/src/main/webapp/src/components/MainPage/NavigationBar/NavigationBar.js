@@ -95,8 +95,7 @@ export default function NavigationBar(props) {
                 setUsers(response.data);
                 console.log("FETCH USERS: ",response.data)
 
-                /*let temp = clubs.concat(users)
-                setUsersClubs(temp);*/
+
             })
     },[])
 
