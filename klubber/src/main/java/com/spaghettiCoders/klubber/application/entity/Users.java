@@ -10,6 +10,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -49,7 +50,11 @@ public class Users extends BaseEntity {
     @ManyToMany(mappedBy = "users")
     private List<Club> clubs = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "user_subclub",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "subclub_id")
+    )
     private List<SubClub> subClubs = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.ALL})
@@ -67,8 +72,7 @@ public class Users extends BaseEntity {
     @JoinColumn(name = "user_id")
     private List<Rate> rateList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = false)
-    private SubClub subClub;
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
+    private Set<SubClub> adminSubClubs;
 
 }

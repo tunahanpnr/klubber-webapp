@@ -6,9 +6,7 @@ import com.spaghettiCoders.klubber.application.dto.request.JoinClubReqDTO;
 import com.spaghettiCoders.klubber.application.entity.*;
 import com.spaghettiCoders.klubber.application.mapper.ClubMapper;
 import com.spaghettiCoders.klubber.application.mapper.UsersMapper;
-import com.spaghettiCoders.klubber.application.repository.AnswerRepository;
-import com.spaghettiCoders.klubber.application.repository.ClubRepository;
-import com.spaghettiCoders.klubber.application.repository.UsersRepository;
+import com.spaghettiCoders.klubber.application.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,23 +20,25 @@ import java.util.regex.Pattern;
 public class ClubService {
 
     private final ClubRepository clubRepository;
+    private final SubClubRepository subClubRepository;
     private final UsersRepository usersRepository;
     private final AnswerRepository answerRepository;
+    private final AnsweredClubRepository answeredClubRepository;
     private final ClubMapper clubMapper;
     private final UsersMapper usersMapper;
 
-    public String createClub(Club club, String username){
-        Users user =  usersRepository.findByUsername(username);
+    public String createClub(Club club, String username) {
+        Users user = usersRepository.findByUsername(username);
 
-        if(!user.getRole().toString().equals("ADMIN")){
+        if (!user.getRole().toString().equals("ADMIN")) {
             return "Only users with the role of ADMIN can open a club!";
         }
 
-        if(clubRepository.existsClubByName(club.getName())) {
+        if (clubRepository.existsClubByName(club.getName())) {
             return "this club is already exist!";
         }
 
-        if(containsIllegals(club.getName())){
+        if (containsIllegals(club.getName())) {
             return "Club Name can not contain illegal character such as \"@ ? ! | ~ ^ € % &\"";
         }
 
@@ -48,14 +48,14 @@ public class ClubService {
         return "club added to the system successfully";
     }
 
-    public String deleteClub(String username, String name){
+    public String deleteClub(String username, String name) {
         Users users = usersRepository.findByUsername(username);
 
-        if(!users.getRole().toString().equals("ADMIN")){
+        if (!users.getRole().toString().equals("ADMIN")) {
             return "Only users with the role of ADMIN can delete a club!";
         }
 
-        if(!clubRepository.existsClubByName(name)){
+        if (!clubRepository.existsClubByName(name)) {
             return "club not found!";
         }
 
@@ -66,17 +66,17 @@ public class ClubService {
         return "club deleted from the system successfully";
     }
 
-    public String updateClubName(Club club, Users user, String newName){
-        if(!user.getRole().toString().equals("ADMIN")){
+    public String updateClubName(Club club, Users user, String newName) {
+        if (!user.getRole().toString().equals("ADMIN")) {
 
             return "Only users with the role of ADMIN can open a club!";
         }
-        if(clubRepository.existsClubByName(newName)) {
+        if (clubRepository.existsClubByName(newName)) {
 
             return "this club is already exist!";
         }
 
-        if(containsIllegals(club.getName())){
+        if (containsIllegals(club.getName())) {
 
             return "Club Name can not contain illegal character such as \"@ ? ! | ~ ^ € % &\"";
         }
@@ -85,19 +85,20 @@ public class ClubService {
         return "Club updated sucessfully.";
     }
 
-    public String updateClubId(Club club, Users user, Long id){
-        if(!user.getRole().toString().equals("ADMIN")){
+    public String updateClubId(Club club, Users user, Long id) {
+        if (!user.getRole().toString().equals("ADMIN")) {
 
             return "Only users with the role of ADMIN can open a club!";
         }
-        if(!clubRepository.existsById(club.getId())){
+        if (!clubRepository.existsById(club.getId())) {
 
             return "club can not found!";
         }
-        if(clubRepository.existsById(id)){
+        if (clubRepository.existsById(id)) {
 
             return "this id used for another club!";
-        }if(!idChecker(String.valueOf(id))){
+        }
+        if (!idChecker(String.valueOf(id))) {
             return "clud id can contain only numbers.";
         }
         club.setId(id);
@@ -106,39 +107,45 @@ public class ClubService {
         return "Club updated sucessfully.";
     }
 
-    public List<ClubDTO> listClub(){
+    public List<ClubDTO> listClub() {
         List<Club> clubs = clubRepository.getClubs();
         return clubMapper.mapToDto(clubs);
     }
 
-    public String joinClub(JoinClubReqDTO joinclubReqDTO){
-        if(!clubRepository.existsClubByName(joinclubReqDTO.getClubname()))
+    public String joinClub(JoinClubReqDTO joinclubReqDTO) {
+        if (!clubRepository.existsClubByName(joinclubReqDTO.getClubname()))
             return "Wrong class name!";
 
-        if(!usersRepository.existsByUsername(joinclubReqDTO.getUsername()))
+        if (!usersRepository.existsByUsername(joinclubReqDTO.getUsername()))
             return "Wrong username!";
 
         Users user = usersRepository.findByUsername(joinclubReqDTO.getUsername());
-        if (user == null)
-            return "user not exist";
 
         Club club = clubRepository.getClubByName(joinclubReqDTO.getClubname());
-        if(club == null)
-            return "club not exist";
 
-        if(club.getUsers().contains(user))
+        if (club.getUsers().contains(user))
             return "already joined";
 
+        if (answeredClubRepository.isAnswered(user.getUsername(), club.getName()))
+            return "already answered this questionnaire";
+
         int score = 0;
-        for (Answer answer:joinclubReqDTO.getAnswers()) {
+        for (Answer answer : joinclubReqDTO.getAnswers()) {
             user.getAnswers().add(answerRepository.findById(answer.getId()).get());
-            score+=answer.getScore();
+            score += answer.getScore();
         }
         usersRepository.save(user);
+        AnsweredClub answeredClub = new AnsweredClub();
+        answeredClub.setClubName(club.getName());
+        answeredClub.setUsername(user.getUsername());
+        answeredClubRepository.save(answeredClub);
 
-        if(score > 12){
+        if (score > 12) {
             club.getUsers().add(user);
             clubRepository.save(club);
+
+            user.getSubClubs().addAll(club.getSubClubs());
+            usersRepository.save(user);
             return "Joined club successfully.";
         }
 
@@ -146,9 +153,9 @@ public class ClubService {
         return "You fail the questionnaire!";
     }
 
-    public String leaveClub(String clubname, String username){
+    public String leaveClub(String clubname, String username) {
         Club club = clubRepository.getClubByName(clubname);
-        if(club == null)
+        if (club == null)
             return "Wrong clubname";
 
         Users user = usersRepository.findByUsername(username);
@@ -175,7 +182,7 @@ public class ClubService {
     }
 
     public List<UserDTO> getUsers(String clubname) {
-        if(clubRepository.existsClubByName(clubname))
+        if (clubRepository.existsClubByName(clubname))
             return usersMapper.mapToDto(clubRepository.getClubByName(clubname).getUsers());
 
         return null;

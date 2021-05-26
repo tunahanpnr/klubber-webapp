@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import icon from "./sign-up.png"
 import axios from "axios";
-
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Signup(props) {
+    const history = useHistory();
     const [newUser, setNewUser] = useState({
         name: "",
         surname: "",
@@ -58,10 +59,12 @@ export default function Signup(props) {
             .then(response => {
                 console.log(newUser)
                 console.log(response)
+                history.push("/login");
             })
             .catch((e) => {
                 console.log(e);
             });
+
     }
 
     return (
