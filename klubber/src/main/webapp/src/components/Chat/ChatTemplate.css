@@ -26,7 +26,7 @@ html {
   width: 100%;
   max-width: 867px;
   margin: 25px 10px;
-  height: calc(100% - 50px);
+  height: 70vh;
   border: var(--border);
   border-radius: 5px;
   background: var(--msger-bg);
@@ -44,7 +44,7 @@ html {
 
 .msger-chat {
   flex: 1;
-  overflow-y: auto;
+  overflow: scroll;
   padding: 10px;
 }
 .msger-chat::-webkit-scrollbar {
