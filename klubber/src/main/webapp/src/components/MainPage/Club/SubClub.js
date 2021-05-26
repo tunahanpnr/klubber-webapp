@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import AuthService from "../../../service/auth/AuthService";
 import axios from "axios";
 import DeleteIcon from "@material-ui/icons/Delete";
+import PostCard from "../../Post/PostCard";
 
 const useStyles = makeStyles((theme) => ({
     Club: {
@@ -44,22 +45,22 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function SubClub(props) {
+export default function SubClub() {
     const classes = useStyles();
+    const {name} = useParams()
     const [currentUser] = useState(AuthService.getCurrentUser());
     const [content, setContent] = useState("");
     const [open, setOpen] = useState(false);
-    const [posts, setPosts] = useState();
+    const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-        axios.get("/getposts/" + props.post.subClubName)
+        axios.get("/getPosts/" + name)
             .then(response => {
                 console.log("-----")
                 console.log(response.data);
                 setPosts(response.data)
             })
-    }, []);
-
+    }, [name]);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -77,12 +78,12 @@ export default function SubClub(props) {
         const newPost = {
             content: content,
             username: currentUser.username,
-            subClubName: props.subClubName
+            subClubName: name
         }
 
         axios.post("/createpost", newPost).then((response) => {
             console.log(response.data)
-            setPosts(posts => [...posts, newPost]);
+            setPosts([...posts, newPost])
         })
 
         setOpen(false);
@@ -104,27 +105,26 @@ export default function SubClub(props) {
         );
     }
 
-    function FormRowPost() {
-        return (
-            <React.Fragment>
-                <Grid item xs={12}>
-                    <h1> SUB-CLUB: {props.subClubName}</h1>
-                </Grid>
-                <Grid item xs={12}>
-                    <Paper className={classes.paper}>
-                        POST
-                    </Paper>
-                </Grid>
-            </React.Fragment>
-        );
+    const showPost = () => {
+        return (posts.map((post) => {
+                return (<PostCard post={post}/>)
+            }
+        ))
     }
-
     return (
         <div className={classes.Club}>
             <Grid container spacing={3}>
 
                 <Grid item xs={9}>
-                    <FormRowPost/>
+                    <Grid item xs={12}>
+                        <h1> SUB-CLUB: {name}</h1>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Paper className={classes.paper}>
+                            POST
+                            {showPost()}
+                        </Paper>
+                    </Grid>
                 </Grid>
 
 

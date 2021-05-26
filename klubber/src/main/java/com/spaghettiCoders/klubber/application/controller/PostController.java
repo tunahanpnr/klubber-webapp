@@ -1,6 +1,6 @@
 package com.spaghettiCoders.klubber.application.controller;
 
-import com.spaghettiCoders.klubber.application.dto.request.CreatePostReqDTO;
+import com.spaghettiCoders.klubber.application.dto.PostDTO;
 import com.spaghettiCoders.klubber.application.entity.Post;
 import com.spaghettiCoders.klubber.application.entity.SubClub;
 import com.spaghettiCoders.klubber.application.entity.Users;
@@ -20,8 +20,8 @@ public class PostController {
 
     @PostMapping("/createpost")
     @PreAuthorize("permitAll()")
-    public String createPost(@Valid @RequestBody CreatePostReqDTO createPostReqDTO) {
-        return postService.createPost(createPostReqDTO);
+    public String createPost(@Valid @RequestBody PostDTO postDTO) {
+        return postService.createPost(postDTO);
     }
 
     /*@PostMapping("/createpost")
@@ -36,9 +36,9 @@ public class PostController {
         return postService.getPost(postId);
     }
 
-    @GetMapping("/getPosts/{subClubName")
+    @GetMapping("/getPosts/{subClubName}")
     @PreAuthorize("permitAll()")
-    public List<Post> getPost(@PathVariable String subClubName) {
+    public List<PostDTO> getPost(@PathVariable String subClubName) {
         return postService.getPosts(subClubName);
     }
 

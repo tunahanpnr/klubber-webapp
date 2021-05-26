@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,6 +42,7 @@ public class ClubService {
             return "Club Name can not contain illegal character such as \"@ ? ! | ~ ^ € % &\"";
         }
 
+        club.setName(club.getName().toLowerCase());
         clubRepository.save(club);
 
         return "club added to the system successfully";
@@ -144,29 +146,18 @@ public class ClubService {
         return "You fail the questionnaire!";
     }
 
-    public String leaveClub(Club club, Users user){
-        List<Users> temporaryClubUsers = club.getUsers();
-        List<Club> temporaryUserClubs = user.getClubs();
-        boolean isUserExistAnySubClub = false;
+    public String leaveClub(String clubname, String username){
+        Club club = clubRepository.getClubByName(clubname);
+        if(club == null)
+            return "Wrong clubname";
 
-        if(!temporaryClubUsers.contains(user)){
-            return "user not found.";
-        }
+        Users user = usersRepository.findByUsername(username);
+        if (user == null)
+            return "Wrong username!";
 
-        for(SubClub sb: club.getSubClubs()){
-            if(sb.getUsers().contains(user)){
-                isUserExistAnySubClub = true;
-            }
-        }
-        if(isUserExistAnySubClub) {
-            return "user cannot leave club because user inside one of the Club's SubClub.";
-        }
+        club.getUsers().remove(user);
 
-        temporaryClubUsers.remove(user);
-        club.setUsers(temporaryClubUsers);
-
-        temporaryUserClubs.remove(club);
-        user.setClubs(temporaryUserClubs);
+        clubRepository.save(club);
 
         return "user leaved club successfully.";
     }

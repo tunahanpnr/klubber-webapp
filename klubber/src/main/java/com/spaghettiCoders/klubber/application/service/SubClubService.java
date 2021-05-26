@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,7 +51,7 @@ public class SubClubService {
             return "SubClub Name can not contain illegal character such as \"@ ? ! | ~ ^ € % &\"";
 
         SubClub newSubClub = new SubClub();
-        newSubClub.setName(subclub.getSubClubName());
+        newSubClub.setName(subclub.getSubClubName().toLowerCase());
         newSubClub.setAdmin(admin);
         newSubClub.setClub(clubRepository.getClubByName(subclub.getClubName()));
         subClubRepository.save(newSubClub);

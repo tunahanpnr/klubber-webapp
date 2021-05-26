@@ -1,4 +1,4 @@
-package com.spaghettiCoders.klubber.application.dto.request;
+package com.spaghettiCoders.klubber.application.dto;
 
 
 import lombok.Getter;
@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CreatePostReqDTO {
+public class PostDTO {
     String content;
     String username;
     String subClubName;
