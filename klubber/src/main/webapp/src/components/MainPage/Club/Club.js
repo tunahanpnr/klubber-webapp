@@ -96,13 +96,14 @@ export default function Club(){
         setOpen(false);
     }
 
-    
+
     const handleLeave = () => {
-        axios.get("/leaveclub/" + name + "/" + currentUser.username)
+        console.log("leave")
+        console.log(name)
+        console.log(currentUser.username)
+        axios.post("/leaveclub/" + name + "/" + currentUser.username)
             .then(response => {
                 console.log(response.data);
-                setSubClub(response.data);
-                setIsReceived(true)
             })
     }
 
