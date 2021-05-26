@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import TextField from "@material-ui/core/TextField";
 import {makeStyles} from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -30,10 +30,18 @@ const useStyles = makeStyles((theme) => ({
         '&:hover': {
             background: "#ab47bc",
         },
-    }, signUp: {
+    },
+    signUp: {
         backgroundColor: "#00897b",
         '&:hover': {
             background: "#4db6ac",
+        },
+        margin: theme.spacing(3, 0, 2),
+    },
+    report: {
+        backgroundColor: "#c22736",
+        '&:hover': {
+            background: "#952736",
         },
         margin: theme.spacing(3, 0, 2),
     },
@@ -45,13 +53,29 @@ export default function Profile(props) {
     console.log(name);
     const classes = useStyles();
 
+
+
     const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
     const [updatedUser, setUpdatedUser] = useState(AuthService.getCurrentUser());
     const [changePass, setChangePass] = useState({
         oldPassword: "",
         newPassword: ""
     });
+    const [otherUser,setOtherUser] = useState();
     const [passEnable, setPassEnable] = useState(false);
+    const [otherUserArrived,setOtherUserArrived] = useState(false);
+
+
+
+
+    useEffect(() => {        //----------------------calismiyor
+        axios.get("/getuser/"+name)
+            .then(response => {
+                setOtherUser(response.data);
+                setOtherUserArrived(true);
+                console.log("DATA: ",response.data);
+            })
+    },[])
 
 
     const postUpdateUser = () => {
@@ -73,14 +97,24 @@ export default function Profile(props) {
         console.log("/changepassword/" + currentUser.username)
         console.log(updatedUser)
         axios.post("/changepassword/" + currentUser.username, changePass)
-            .then(response => {
-                console.log(changePass)
-                console.log(response)
+                    .then(response => {
+                        console.log(changePass)
+                        console.log(response)
 
-                setChangePass({
-                    oldPassword: "",
-                    newPassword: ""
-                })
+                        setChangePass({
+                            oldPassword: "",
+                            newPassword: ""
+                        })
+                    })
+                    .catch((e) => {
+                        console.log(e);
+            });
+    }
+
+    const postReport = () => {
+        axios.post("/reportuser/"+otherUser.username, currentUser)
+            .then(response => {
+                console.log(response.data)
             })
             .catch((e) => {
                 console.log(e);
@@ -175,7 +209,8 @@ export default function Profile(props) {
                         >
                             Update Profile
                         </Button>}
-                        {!passEnable && <Button
+                        {!passEnable &&
+                        <Button
                             onClick={() => setPassEnable(true)}
                             fullWidth
                             variant="contained"
@@ -217,18 +252,20 @@ export default function Profile(props) {
                     </Typography>
 
                     <form className={classes.form}>
-                        {!passEnable && <div><TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="name"
-                            label="Name"
-                            name="name"
-                            autoFocus
-                            value={updatedUser.name}
-                            onChange={e => setUpdatedUser({...updatedUser, name: e.target.value})}
-                        />
+                        {otherUserArrived &&
+                        <div>
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="name"
+                                label="Name"
+                                name="name"
+                                autoFocus
+                                value={otherUser.name}
+                                onChange={e => setUpdatedUser({...updatedUser, name: e.target.value})}
+                            />
                             <TextField
                                 variant="outlined"
                                 margin="normal"
@@ -237,8 +274,7 @@ export default function Profile(props) {
                                 id="surname"
                                 label="Surname"
                                 name="surname"
-                                value={updatedUser.surname}
-                                onChange={e => setUpdatedUser({...updatedUser, surname: e.target.value})}
+                                value={otherUser.surname}
                             />
                             <TextField
                                 variant="outlined"
@@ -248,8 +284,7 @@ export default function Profile(props) {
                                 id="username"
                                 label="Username"
                                 name="username"
-                                value={updatedUser.username}
-                                onChange={e => setUpdatedUser({...updatedUser, username: e.target.value})}
+                                value={otherUser.username}
                             />
                             <TextField
                                 variant="outlined"
@@ -259,70 +294,18 @@ export default function Profile(props) {
                                 id="email"
                                 label="E-mail"
                                 name="email"
-                                value={updatedUser.email}
-                                onChange={e => setUpdatedUser({...updatedUser, email: e.target.value})}
-                            /></div>}
-                        {passEnable && <div><TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="Old Password"
-                            label="Old Password"
-                            type="Old Password"
-                            id="Old Password"
-                            value={changePass.oldPassword}
-                            onChange={e => setChangePass({...changePass, oldPassword: e.target.value})}
-                        />
-                            <TextField
-                                variant="outlined"
-                                margin="normal"
-                                required
+                                value={otherUser.email}
+                            />
+                            <Button
+                                onClick={() => {postReport()}}
                                 fullWidth
-                                name="Old Password"
-                                label="Old Password"
-                                type="Old Password"
-                                id="Old Password"
-                                value={changePass.newPassword}
-                                onChange={e => setChangePass({...changePass, newPassword: e.target.value})}
-                            /></div>}
-                        {!passEnable && <Button
-                            onClick={postUpdateUser}
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.signIn}
-                        >
-                            Update Profile
-                        </Button>}
-                        {!passEnable && <Button
-                            onClick={() => setPassEnable(true)}
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.signUp}
-                        >
-                            Change Password Fields
-                        </Button>}
+                                variant="contained"
+                                color="primary"
+                                className={classes.report}>
+                                Report this User
+                            </Button>
+                        </div>}
 
-                        {passEnable && <Button
-                            onClick={postChangePassword}
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.signIn}
-                        >
-                            Change My Password
-                        </Button>}
-                        {passEnable && <Button
-                            onClick={() => setPassEnable(false)}
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.signUp}
-                        >
-                            Cancel Change Password
-                        </Button>}
                     </form>
                 </div>
             </Container>

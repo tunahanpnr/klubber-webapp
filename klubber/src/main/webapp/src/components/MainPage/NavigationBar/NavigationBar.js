@@ -82,7 +82,7 @@ export default function NavigationBar(props) {
         axios.get("/listclub")
             .then(response => {
                 setClubs(response.data);
-                console.log("FETCH CLUBS: " , response.data)
+
 
                 /*let temp = clubs.concat(users)
                 setUsersClubs(temp);*/
@@ -93,7 +93,7 @@ export default function NavigationBar(props) {
         axios.get("/fetchusers")
             .then(response => {
                 setUsers(response.data);
-                console.log("FETCH USERS: ",response.data)
+
 
 
             })
@@ -101,14 +101,13 @@ export default function NavigationBar(props) {
 
     useEffect( () => {
         setSearchables([])
-        console.log(clubs,"  xxx ",users)
         for(let i=0;i<clubs.length; i++){
             let searchableObj = {type:"club",name: clubs[i].name}
             setSearchables(searchables => [...searchables,searchableObj])
         }
 
         for(let i=0;i<users.length; i++){
-            let searchableObj = {type:"user",name: users[i].name}
+            let searchableObj = {type:"user",name: users[i].username}
             setSearchables(searchables => [...searchables,searchableObj])
         }
 
