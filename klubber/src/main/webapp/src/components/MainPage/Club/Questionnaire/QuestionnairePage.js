@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import Questionnaire from "./Questionnaire";
-import {useParams} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 import axios from "axios";
 
 
@@ -36,6 +36,7 @@ export default function QuestionnairePage(){
     const classes = useStyles();
     const [questions, setQuestions] = useState()
     let { name } = useParams();
+
 
     useEffect(() => {
         axios.get("/getquestions/" + name)

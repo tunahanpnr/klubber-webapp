@@ -2,10 +2,8 @@ import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import List from "./List";
 import axios from "axios";
-import ClubList from "./ClubList";
 import ClubJoin from "./ClubJoin";
 import AuthService from "../../../../service/auth/AuthService";
-import PostCard from "../../../Post/PostCard";
 
 const useStyles = makeStyles((theme) => ({
     paper: {

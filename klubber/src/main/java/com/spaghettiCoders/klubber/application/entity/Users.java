@@ -37,6 +37,9 @@ public class Users extends BaseEntity {
     @NonNull
     private String password;
 
+    @Column(name = "reportcount")
+    private int reportCount = 0;
+
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -65,11 +68,11 @@ public class Users extends BaseEntity {
     private List<Answer> answers = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users_id")
     private List<Post> postList = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users_id")
     private List<Rate> rateList = new ArrayList<>();
 
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)

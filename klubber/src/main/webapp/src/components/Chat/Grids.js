@@ -61,12 +61,14 @@ export default function Grids() {
                 console.log(response.data);
                 setUsers(response.data);
             })
+
         axios.get("/getMySubClubs/" + sender.username)
             .then(response => {
                 console.log("Grids-getMySubClubs");
                 console.log(response.data);
                 setMySubClubs(response.data);
             })
+
     }, []);
 
     function listUsers() {
