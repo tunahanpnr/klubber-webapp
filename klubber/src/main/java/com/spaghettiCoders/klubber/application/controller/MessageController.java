@@ -37,9 +37,14 @@ public class MessageController {
         return messageDTO;
     }
 
-    @GetMapping("/getmessages/{user1}/{user2}")
+    @GetMapping("/getPrivMessages/{user1}/{user2}")
     public List<Message> getPrivMessages(@PathVariable String user1, @PathVariable String user2) {
         return messageService.getPrivateMessages(user1, user2);
+    }
+
+    @GetMapping("/getSubClubMessages/{subClub}")
+    public List<Message> getSubClubMessages(@PathVariable String subClub) {
+        return messageService.getSubClubMessages(subClub);
     }
 
 

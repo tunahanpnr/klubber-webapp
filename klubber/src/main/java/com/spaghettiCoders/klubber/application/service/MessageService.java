@@ -24,4 +24,8 @@ public class MessageService {
         Message message = messageMapper.mapToEntity(messageDTO);
         messageRepository.save(message);
     }
+
+    public List<Message> getSubClubMessages(String subClub) {
+        return messageRepository.getSubClubMessages(subClub);
+    }
 }
