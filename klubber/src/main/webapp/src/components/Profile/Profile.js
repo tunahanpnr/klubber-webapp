@@ -121,7 +121,7 @@ export default function Profile(props) {
             });
     }
 
-    if( currentUser.name === name ){
+    if( currentUser.username === name ){
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>

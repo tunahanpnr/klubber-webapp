@@ -1,12 +1,9 @@
 package com.spaghettiCoders.klubber.application.service;
 
 import com.spaghettiCoders.klubber.application.dto.UserDTO;
-import com.spaghettiCoders.klubber.application.dto.request.LoginReqDTO;
-import com.spaghettiCoders.klubber.application.dto.response.LoginResDTO;
 import com.spaghettiCoders.klubber.application.entity.Club;
 import com.spaghettiCoders.klubber.application.entity.Users;
 import com.spaghettiCoders.klubber.application.mapper.UsersMapper;
-import com.spaghettiCoders.klubber.application.repository.ClubRepository;
 import com.spaghettiCoders.klubber.application.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,8 +16,8 @@ public class UsersService {
     private final UsersRepository usersRepository;
     private final UsersMapper usersMapper;
 
-    public List<Users> getAllUsers() {
-        return usersRepository.findAll();
+    public List<UserDTO> getAllUsers() {
+        return usersMapper.mapToDto(usersRepository.findAll());
     }
 
     public List<Club> getClubs(String username){
@@ -30,12 +27,14 @@ public class UsersService {
         return null;
     }
 
+
     public UserDTO getInfoFromUser(String username) {
-        if(!usersRepository.existsByUsername(username)) {
+        Users user = usersRepository.findByUsername(username);
+        if(user ==null){
             return null;
         }
-        Users user = usersRepository.findByUsername(username);
-        return usersMapper.mapToDto(user);
+        UserDTO userDTO = usersMapper.mapToDto(user);
+        return userDTO;
     }
 
     public String reportUser(Users user, String username) {

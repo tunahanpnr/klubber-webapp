@@ -7,9 +7,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import axios from "axios";
 import {Link} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import AuthService from "../../../../service/auth/AuthService";
@@ -43,31 +40,6 @@ export default function ClubJoin(props) {
         name: "",
         club_user: AuthService.getCurrentUser()
     })
-
-
-    // const joinClubHandler = (clubName) => {
-    //     console.log(clubName)
-    //
-    //     joinClubForm.name = clubName
-    //     // setJoinClubForm({...joinClubForm, joinClubForm.name: clubName})
-    //
-    //     console.log(joinClubForm)
-    //     // props.setDeleted(!props.deleted)
-    //
-    //     // axios.post("/joinclub", joinClubForm)
-    //     //     .then(
-    //     //         (response) => {
-    //     //             console.log("CLUB JOIN")
-    //     //             console.log(response);
-    //     //             if (response.data === "") {
-    //     //                 console.log("No response")
-    //     //             }
-    //     //         },
-    //     //     ).catch(
-    //     //     (error) => {
-    //     //         console.log(error);
-    //     //     })
-    // }
 
 
         return (
@@ -105,7 +77,6 @@ export default function ClubJoin(props) {
                                                             color="primary"
                                                             aria-label="join"
                                                             className={classes.margin}
-                                                            // onClick={() => joinClubHandler(row.name)}
                                                             href={"QuestionnairePage/" + row.name}
                                                     >
                                                         Join

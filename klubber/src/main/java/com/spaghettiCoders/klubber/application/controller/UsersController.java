@@ -18,7 +18,7 @@ public class UsersController {
 
     @GetMapping("/fetchusers")
     @PreAuthorize("permitAll()")
-    public List<Users> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
         return usersService.getAllUsers();
     }
 
