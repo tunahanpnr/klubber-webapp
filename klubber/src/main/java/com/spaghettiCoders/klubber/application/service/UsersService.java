@@ -9,6 +9,7 @@ import com.spaghettiCoders.klubber.application.mapper.UsersMapper;
 import com.spaghettiCoders.klubber.application.repository.ClubRepository;
 import com.spaghettiCoders.klubber.application.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +33,10 @@ public class UsersService {
 
     public UserDTO getUser(String username) {
         Users user = usersRepository.findByUsername(username);
-        return usersMapper.mapToDto(user);
+        if(user ==null){
+            return null;
+        }
+        UserDTO userDTO = usersMapper.mapToDto(user);
+        return userDTO;
     }
 }
