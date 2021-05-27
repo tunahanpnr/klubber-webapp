@@ -62,7 +62,7 @@ export default function Clubs(props){
                 console.log(response.data);
                 setAvailableClubs(response.data);
             })
-    }, [deleted])
+    }, [])
 
     return(
         <div className={useStyles().paper}>
