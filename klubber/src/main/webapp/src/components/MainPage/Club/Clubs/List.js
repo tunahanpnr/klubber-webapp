@@ -38,6 +38,16 @@ const columns = [
 export default function List(props,{setUsername}) {
     const classes = useStyles();
     const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
+    const [list, setList] = useState([]);
+
+    useEffect(() => {
+        axios.get("/listclub")
+            .then(response => {
+                console.log("-----")
+                console.log(response.data);
+                setList(response.data);
+            })
+    }, [])
 
     const deleteClubHandler = (id) => {
         console.log(id)
@@ -65,7 +75,7 @@ export default function List(props,{setUsername}) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {props.rows && props.rows.map((row) => {
+                        {list && list.map((row) => {
                             return (
                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                                     {columns.map((column) => {
