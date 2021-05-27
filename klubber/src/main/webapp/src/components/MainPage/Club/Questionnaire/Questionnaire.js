@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -8,6 +8,8 @@ import {Typography} from "@material-ui/core";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 import AuthService from "../../../../service/auth/AuthService";
+import {useHistory} from "react-router-dom";
+
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -31,6 +33,8 @@ export default function Questionnaire(props) {
     const classes = useStyles();
     const [choices, setChoices] = useState([0, 0, 0, 0, 0])
     const [user, setUser] = useState(AuthService.getCurrentUser())
+    let history = useHistory();
+
 
     const [myAnswers, setMyAnswers] = useState({
         clubname: "",
@@ -54,7 +58,7 @@ export default function Questionnaire(props) {
                 console.log("-----")
                 console.log(response.data);
             })
-
+        history.goBack();
     }
 
     const handleToggle = (choice, value) => () => {

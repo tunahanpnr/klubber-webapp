@@ -8,6 +8,8 @@ import Button from "@material-ui/core/Button";
 import icon from "./sign-up.png"
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import {Dialog} from "@material-ui/core";
+import {Alert, AlertTitle} from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -50,21 +52,33 @@ export default function Signup(props) {
         password: "",
         role: ""
     });
-
+    const [errorMessage, setErrorMessage] = useState("");
+    const [open, setOpen] = useState(false);
 
     const classes = useStyles();
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const postSignupRequest = () => {
         axios.post("/signup", newUser)
             .then(response => {
                 console.log(newUser)
-                console.log(response)
-                history.push("/login");
+                console.log(response.data)
+
+                if (response.data === "New user added to the system successfully") {
+                    history.push("/login");
+                }
+                else {
+                    setErrorMessage(response.data);
+                    setOpen(true);
+                }
             })
             .catch((e) => {
+                console.log("error");
                 console.log(e);
             });
-
     }
 
     return (
@@ -143,6 +157,17 @@ export default function Signup(props) {
                         Sign Up
                     </Button>
                 </form>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <Alert severity="error">
+                        <AlertTitle>Error</AlertTitle>
+                        <strong>{errorMessage}</strong>
+                    </Alert>
+                </Dialog>
             </div>
         </Container>
     )

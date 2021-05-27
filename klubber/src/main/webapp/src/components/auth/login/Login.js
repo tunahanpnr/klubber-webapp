@@ -7,6 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import icon from "./user.png";
 import AuthService from "../../../service/auth/AuthService";
+import {Dialog} from "@material-ui/core";
+import {Alert, AlertTitle} from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -40,20 +42,30 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login(props ) {
     const classes = useStyles();
-
+    const [open, setOpen] = useState(false);
     const [user, setUser] = useState({
         username: "",
         password: ""
     })
 
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     const postLoginRequest = () => {
         console.log("postLogin")
         AuthService.login(user)
             .then(
-                () => {
+                (rest) => {
                     console.log(user);
-                    props.history.push("/home");
-                    window.location.reload();
+                    console.log(rest);
+                    if (rest !== "") {
+                        props.history.push("/home");
+                        window.location.reload();
+                    }
+                    else {
+                        setOpen(true)
+                    }
                 },
             ).catch(
             (error) => {
@@ -117,6 +129,17 @@ export default function Login(props ) {
                     </Button>
                 </form>
             </div>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <Alert severity="error">
+                    <AlertTitle>Error</AlertTitle>
+                    <strong>WRONG USERNAME OR PASSWORD</strong>
+                </Alert>
+            </Dialog>
         </Container>
     )
 
