@@ -6,6 +6,7 @@ import axios from "axios";
 import Question from "./Question";
 import {Alert, AlertTitle} from "@material-ui/lab";
 import AuthService from "../../../../service/auth/AuthService";
+import {Dialog} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -32,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 export default function CCForm() {
     const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
     const classes = useStyles();
+    const [open, setOpen] = useState(false);
+    const [added, setAdded] = useState(false);
 
     const [clubCreateForm, setClubCreateForm] = useState({
         name: "",
@@ -39,26 +42,11 @@ export default function CCForm() {
         questions: []
     })
 
-
-    const [add, setAdd] = useState(false)
-
-
-    const errorMessage = (
-        <Alert severity="error">
-            <AlertTitle>Error</AlertTitle>
-            <strong>check it out!</strong>
-        </Alert>
-    )
-
-    const successMessage = (
-        <Alert severity="success">
-            <AlertTitle>Success</AlertTitle>
-            <strong>Club added to the system successfully</strong>
-        </Alert>
-    )
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const postClubCreateRequest = () => {
-
         console.log(clubCreateForm)
         axios.post("/createclub/" + currentUser.username, clubCreateForm)
             .then(
@@ -71,18 +59,13 @@ export default function CCForm() {
                     }
                     else {
                         setAdded(true);
-                        setClubCreateForm({
-                            name: "",
-                            requiredScore: 100,
-                            questions: []
-                        })
                     }
                     setOpen(true);
                 },
             ).catch(
             (error) => {
                 console.log(error);
-                setAdd(false)
+                setAdded(false);
             })
     }
 
@@ -129,10 +112,22 @@ export default function CCForm() {
             >
                 Create Club!
             </Button>
-            <div className={classes.message}>
-                {add && successMessage}
-                {/*//{add==true && window.alert("Club added to the system successfully")}*/}
-            </div>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                {added ?
+                    <Alert severity="success">
+                        <AlertTitle>Success</AlertTitle>
+                        <strong>Club added to the system successfully</strong>
+                    </Alert> :
+                    <Alert severity="error">
+                        <AlertTitle>Error</AlertTitle>
+                        <strong>ERROR! Could not create club</strong>
+                    </Alert>}
+            </Dialog>
         </form>
     )
 }

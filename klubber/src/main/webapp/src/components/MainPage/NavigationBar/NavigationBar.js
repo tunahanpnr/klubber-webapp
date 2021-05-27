@@ -44,6 +44,7 @@ export default function NavigationBar(props) {
     const [users, setUsers] = useState([]);
     const [usersClubs, setUsersClubs] = useState([]);
     const [searchables, setSearchables] = useState([]);
+    const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
 
     const defaultProps = {
         options: searchables,
@@ -66,14 +67,15 @@ export default function NavigationBar(props) {
     const isCCMenuOpen = Boolean(CCanchorEl)
 
     const handleClubCreateMenuOpen = (event) => {
-        setCCAnchorEl(event.currentTarget);
+        if(currentUser.role === "ADMIN") {
+            setCCAnchorEl(event.currentTarget);
+        }
     };
 
     const handleClubCreateMenuClose = () => {
         setCCAnchorEl(null);
     };
 
-    const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
 
     useEffect(() => {
         axios.get("/getMyClubs/" + currentUser.username)
