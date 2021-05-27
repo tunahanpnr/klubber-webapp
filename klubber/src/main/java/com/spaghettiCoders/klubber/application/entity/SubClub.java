@@ -36,7 +36,7 @@ public class SubClub extends BaseEntity {
     @ManyToMany(mappedBy = "subClubs")
     private List<Users> users = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "admin_id")
     private Users admin;
 }

@@ -66,7 +66,9 @@ public class ClubService {
 
         Club club = clubRepository.getClubByName(name);
 
-        club.getQuestions().clear();
+        for (Question question:club.getQuestions()) {
+            question.setAnswers(new ArrayList<>());
+        }
 
         clubRepository.delete(club);
 
