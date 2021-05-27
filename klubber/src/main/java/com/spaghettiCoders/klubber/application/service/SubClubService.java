@@ -56,8 +56,10 @@ public class SubClubService {
         SubClub newSubClub = new SubClub();
         newSubClub.setName(subclub.getSubClubName().toLowerCase());
         newSubClub.setAdmin(admin);
+        admin.getSubClubs().add(newSubClub);
         newSubClub.setClub(clubRepository.getClubByName(subclub.getClubName()));
         subClubRepository.save(newSubClub);
+        usersRepository.save(admin);
 
         return "subclub added to the system successfully";
     }

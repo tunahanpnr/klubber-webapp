@@ -68,7 +68,6 @@ public class ClubService {
 
         for (Question question:club.getQuestions()) {
             question.setAnswers(new ArrayList<>());
-            questionRepository.save(question);
         }
 
         clubRepository.delete(club);
