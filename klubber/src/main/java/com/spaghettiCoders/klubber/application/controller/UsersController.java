@@ -33,7 +33,7 @@ public class UsersController {
     @GetMapping("/getuser/{username}")
     @PreAuthorize("permitAll()")
     public UserDTO getInfoFromUser(@PathVariable String username) {
-        return usersService.getInfoFromUser(username);
+        return usersService.getUser(username);
     }
 
     @PostMapping("/reportuser/{username}")

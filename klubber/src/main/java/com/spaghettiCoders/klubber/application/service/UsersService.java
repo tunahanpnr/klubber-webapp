@@ -55,22 +55,35 @@ public class UsersService {
         return userDTO;
     }
 
+    public UserDTO getUser(String username) {
+        Users user = usersRepository.findByUsername(username);
+        if(user ==null){
+            return null;
+        }
+        UserDTO userDTO = usersMapper.mapToDto(user);
+        return userDTO;
+    }
+
     public String reportUser(Users user, String username) {
         if(!usersRepository.existsByUsername(username)) {
             return "This user can't be found!";
         }
+
+        Users currentUser = usersRepository.findByUsername(user.getUsername());
         Users toBeReported = usersRepository.findByUsername(username);
         List<Club> toBeReportedClubs = toBeReported.getClubs();
 
         int currentReportCount = toBeReported.getReportCount();
 
         for (Club club: toBeReportedClubs) {
-            if (user.getClubs().contains(club)) {
+            if (currentUser.getClubs().contains(club)) {
                 toBeReported.setReportCount(currentReportCount + 1);
                 if (toBeReported.getReportCount() == 5) {
-                    usersRepository.deleteById(toBeReported.getId());
+                    toBeReported.setEnabled(false);
+                    usersRepository.save(toBeReported);
                     return "Reported user has been banned!";
                 }
+                usersRepository.save(toBeReported);
                 return "User has been reported!";
             }
         }
