@@ -5,6 +5,7 @@ import axios from "axios";
 import {Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
+import {Alert, AlertTitle} from "@material-ui/lab";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -20,17 +21,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AdminButton(props) {
     const classes = useStyles();
+    let history = useHistory();
+
     const [open, setOpen] = useState(false);
     const [content, setContent] = useState("");
     const [currentUser] = useState(AuthService.getCurrentUser());
-    let history = useHistory();
-
+    const [openError, setOpenError] = useState(false);
+    const [change, setChange] = useState(false);
+    const [messages, setMessages] = useState([]);
 
     const handleClickOpen = () => {
         setOpen(true);
     };
     const handleClose = () => {
         setOpen(false);
+    };
+
+    const handleCloseError = () => {
+        setOpenError(false);
     };
 
     const handleChangeContent = (cont) => {
@@ -42,8 +50,17 @@ export default function AdminButton(props) {
         {console.log("/updateclub/" + props.name + "/" + currentUser.username)}
         axios.post("/updateclub/" + props.name + "/" + currentUser.username, {name:content})
             .then((response) => {
-                console.log(response.data)
-                history.goBack()
+                console.log(response.data);
+                setMessages(response.data)
+                setOpenError(true);
+
+                if (response.data === "Club updated sucessfully.")
+                {
+                    setOpen(false);
+                    setChange(true);
+                    console.log(change);
+                    history.goBack()
+                }
         })
         setOpen(false);
     }
@@ -77,6 +94,23 @@ export default function AdminButton(props) {
                         change
                     </Button>
                 </DialogActions>
+            </Dialog>
+
+            <Dialog
+                open={openError}
+                onClose={handleCloseError}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                {change ?
+                    <Alert severity="success">
+                        <AlertTitle>Success</AlertTitle>
+                        <strong>{messages}</strong>
+                    </Alert> :
+                    <Alert severity="error">
+                        <AlertTitle>Error</AlertTitle>
+                        <strong>{messages}</strong>
+                    </Alert>}
             </Dialog>
         </div>
     );

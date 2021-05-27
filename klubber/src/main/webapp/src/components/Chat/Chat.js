@@ -46,7 +46,7 @@ export default function Chat(props) {
                 console.log(response.data);
                 setMessages(response.data);
             })
-    }, [props.receiver, props.sender]);
+    }, [props.receiver, props.sender, props.chatType]);
 
     let onConnected = () => {
         setConnected(true)

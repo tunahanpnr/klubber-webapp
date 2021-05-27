@@ -22,6 +22,9 @@ public class PostService {
     private final UsersRepository usersRepository;
 
     public String createPost(PostDTO postDTO){
+        if(postDTO.getContent().strip().equals(""))
+            return "Content can not be empty!";
+
         SubClub subClub = subClubRepository.findByName(postDTO.getSubClubName());
         if(subClub == null)
             return "Subclub doesn't exist!";

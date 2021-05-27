@@ -22,6 +22,7 @@ public class ClubService {
 
     private final ClubRepository clubRepository;
     private final SubClubRepository subClubRepository;
+    private final QuestionRepository questionRepository;
     private final UsersRepository usersRepository;
     private final AnswerRepository answerRepository;
     private final AnsweredClubRepository answeredClubRepository;
@@ -29,6 +30,9 @@ public class ClubService {
     private final UsersMapper usersMapper;
 
     public String createClub(Club club, String username) {
+        if(club.getName().strip().equals(""))
+            return "Club name can not be empty!";
+
         Users user = usersRepository.findByUsername(username);
 
         if (!user.getRole().toString().equals("ADMIN")) {
@@ -61,6 +65,11 @@ public class ClubService {
         }
 
         Club club = clubRepository.getClubByName(name);
+
+        for (Question question:club.getQuestions()) {
+            question.setAnswers(new ArrayList<>());
+            questionRepository.save(question);
+        }
 
         clubRepository.delete(club);
 

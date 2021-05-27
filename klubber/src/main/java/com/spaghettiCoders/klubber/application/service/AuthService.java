@@ -17,6 +17,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Pattern;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -28,6 +30,18 @@ public class AuthService {
     private final EmailService emailService;
 
     public String signup(RegisterReqDTO registerReqDTO) {
+        if(registerReqDTO.getUsername().equals(""))
+            return "Username cant be null!";
+
+        if(registerReqDTO.getEmail().equals(""))
+            return "Email cant be null!";
+
+        if(!isValid(registerReqDTO.getEmail()))
+            return "Email pattern is wrong!";
+
+        if(registerReqDTO.getPassword().equals(""))
+            return "Password cant be null!";
+
         if (usersRepository.existsByUsername(registerReqDTO.getUsername())) {
             return "This username is already exits!";
         }
@@ -125,5 +139,17 @@ public class AuthService {
         usersRepository.save(currentUser);
 
         return "Your password changed successfully";
+    }
+
+    public static boolean isValid(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null)
+            return false;
+        return pat.matcher(email).matches();
     }
 }

@@ -26,6 +26,9 @@ public class SubClubService {
 
 
     public String createSubClub(SubClubCreateReqDTO subclub){
+        if(subclub.getSubClubName().strip().equals(""))
+            return "Subclub name can not be empty!";
+
         if(!usersRepository.existsByUsername(subclub.getCreator()))
             return "creator not exist!";
 

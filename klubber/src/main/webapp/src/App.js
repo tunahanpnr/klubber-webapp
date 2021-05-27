@@ -19,8 +19,6 @@ import SubClub from "./components/MainPage/Club/SubClub";
 function App() {
 
     const [currentUser, setCurrentUser] = useState();
-    const [username, setUsername] = useState('Default username');
-
 
     useEffect(() => {
         const user = AuthService.getCurrentUser();
