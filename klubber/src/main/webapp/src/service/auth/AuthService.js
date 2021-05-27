@@ -11,8 +11,11 @@ const login = (user) => {
         .post("/signin", user)
         .then((response) => {
             console.log(user)
-
+            console.log(response.data)
             localStorage.setItem("user", JSON.stringify(response.data));
+            if (!(response.data === "")) {
+                window.location.reload();
+            }
 
 
             return response.data;

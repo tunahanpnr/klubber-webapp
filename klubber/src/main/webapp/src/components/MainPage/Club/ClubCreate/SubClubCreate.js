@@ -174,14 +174,14 @@ export default function SubClubCreate(){
                     aria-describedby="alert-dialog-description"
                 >
                     {added ?
-                    <Alert severity="success">
-                        <AlertTitle>Success</AlertTitle>
-                        <strong>Sub-Club added to the system successfully</strong>
-                    </Alert> :
-                    <Alert severity="error">
-                        <AlertTitle>Error</AlertTitle>
-                        <strong>ERROR! Could not create club</strong>
-                    </Alert>}
+                        <Alert severity="success">
+                            <AlertTitle>Success</AlertTitle>
+                            <strong>Sub-Club added to the system successfully</strong>
+                        </Alert> :
+                        <Alert severity="error">
+                            <AlertTitle>Error</AlertTitle>
+                            <strong>ERROR! Could not create Sub-Club</strong>
+                        </Alert>}
                 </Dialog>
             </div>
         </Container>

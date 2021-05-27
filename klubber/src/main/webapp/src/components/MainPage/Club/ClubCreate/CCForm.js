@@ -63,18 +63,21 @@ export default function CCForm() {
         axios.post("/createclub/" + currentUser.username, clubCreateForm)
             .then(
                 (response) => {
-                    console.log("CLUB CREATE")
+                    console.log("CLUB CREATE");
                     console.log(response);
-                    if (response.data === "") {
+                    if (response.data !== "club added to the system successfully") {
                         console.log("No response")
-                        setAdd(false)
+                        setAdded(false);
                     }
-                    setAdd(true)
-                    setClubCreateForm({
-                        name: "",
-                        requiredScore: 100,
-                        questions: []
-                    })
+                    else {
+                        setAdded(true);
+                        setClubCreateForm({
+                            name: "",
+                            requiredScore: 100,
+                            questions: []
+                        })
+                    }
+                    setOpen(true);
                 },
             ).catch(
             (error) => {
