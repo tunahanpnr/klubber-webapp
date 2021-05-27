@@ -69,7 +69,7 @@ export default function Grids() {
                 setMySubClubs(response.data);
             })
 
-    }, []);
+    }, [sender.username]);
 
     function listUsers() {
         return (users.map((user) => {

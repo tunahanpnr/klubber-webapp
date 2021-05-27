@@ -1,5 +1,6 @@
 package com.spaghettiCoders.klubber.application.controller;
 
+import com.spaghettiCoders.klubber.application.dto.ClubDTO;
 import com.spaghettiCoders.klubber.application.dto.UserDTO;
 import com.spaghettiCoders.klubber.application.entity.Club;
 import com.spaghettiCoders.klubber.application.dto.SubClubDTO;
@@ -49,6 +50,18 @@ public class UsersController {
     @PreAuthorize("permitAll()")
     public List<SubClubDTO> getMySubClubs(@PathVariable String username) {
         return usersService.getMySubClubs(username);
+    }
+
+    @GetMapping("/getMyClubs/{username}")
+    @PreAuthorize("permitAll()")
+    public List<ClubDTO> getMyClubs(@PathVariable String username) {
+        return usersService.getMyClubs(username);
+    }
+
+    @GetMapping("/getAvailableClubs/{username}")
+    @PreAuthorize("permitAll()")
+    public List<ClubDTO> getAvailableClubs(@PathVariable String username) {
+        return usersService.getAvailableClubs(username);
     }
 
 }

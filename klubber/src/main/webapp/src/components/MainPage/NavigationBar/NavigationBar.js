@@ -19,23 +19,20 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {Button} from "@material-ui/core";
 import axios from "axios";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { TextField } from '@material-ui/core';
+import {TextField} from '@material-ui/core';
 import {Link as Link} from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
 
-    Search:{
-        backgroundColor:"white",
-        borderRadius:"10px",
-        marginLeft:"20px",
-        minWidth:"30%"
+    Search: {
+        backgroundColor: "white",
+        borderRadius: "10px",
+        marginLeft: "20px",
+        minWidth: "30%"
 
     }
 }));
-
-
-
 
 
 export default function NavigationBar(props) {
@@ -46,7 +43,7 @@ export default function NavigationBar(props) {
     const [clubs, setClubs] = useState([]);
     const [users, setUsers] = useState([]);
     const [usersClubs, setUsersClubs] = useState([]);
-    const [searchables,setSearchables] = useState([]);
+    const [searchables, setSearchables] = useState([]);
 
     const defaultProps = {
         options: searchables,
@@ -79,15 +76,11 @@ export default function NavigationBar(props) {
     const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
 
     useEffect(() => {
-        axios.get("/listclub")
+        axios.get("/getMyClubs/" + currentUser.username)
             .then(response => {
                 setClubs(response.data);
-
-
-                /*let temp = clubs.concat(users)
-                setUsersClubs(temp);*/
             })
-    },[])
+    }, [])
 
     useEffect(() => {
         axios.get("/fetchusers")
@@ -95,34 +88,31 @@ export default function NavigationBar(props) {
                 setUsers(response.data);
 
 
-
             })
-    },[])
+    }, [])
 
-    useEffect( () => {
+    useEffect(() => {
         setSearchables([])
-        for(let i=0;i<clubs.length; i++){
-            let searchableObj = {type:"club",name: clubs[i].name}
-            setSearchables(searchables => [...searchables,searchableObj])
+        for (let i = 0; i < clubs.length; i++) {
+            let searchableObj = {type: "club", name: clubs[i].name}
+            setSearchables(searchables => [...searchables, searchableObj])
         }
 
-        for(let i=0;i<users.length; i++){
-            let searchableObj = {type:"user",name: users[i].username}
-            setSearchables(searchables => [...searchables,searchableObj])
+        for (let i = 0; i < users.length; i++) {
+            let searchableObj = {type: "user", name: users[i].username}
+            setSearchables(searchables => [...searchables, searchableObj])
         }
 
-    },[users,clubs])
-
-
+    }, [users, clubs])
 
 
     const renderClubCreateMenu = (
         <Menu
             anchorEl={CCanchorEl}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            anchorOrigin={{vertical: 'top', horizontal: 'right'}}
             id={'club-create-menu'}
             keepMounted
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            transformOrigin={{vertical: 'top', horizontal: 'right'}}
             open={isCCMenuOpen}
             onClose={handleClubCreateMenuClose}
         >
@@ -140,7 +130,7 @@ export default function NavigationBar(props) {
 
     return (
         <div className={classes.root}>
-            <CssBaseline />
+            <CssBaseline/>
 
             <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar>
@@ -152,22 +142,23 @@ export default function NavigationBar(props) {
                         renderOption={(option) => (
                             <React.Fragment>
                                 <span
-                                    style={{ cursor: "pointer" }}
+                                    style={{cursor: "pointer"}}
                                     onClick={() => {
 
-                                        if(option.type === "club"){
-                                            window.location.href = "/club/"+option.name;
-                                        }else if(option.type === "user"){
-                                            window.location.href = "/profile/"+option.name;
+                                        if (option.type === "club") {
+                                            window.location.href = "/club/" + option.name;
+                                        } else if (option.type === "user") {
+                                            window.location.href = "/profile/" + option.name;
                                         }
 
                                     }}
                                 >
-                                  {option.name+"    :"+option.type}
+                                  {option.name + "    :" + option.type}
                                 </span>
                             </React.Fragment>
                         )}
-                        renderInput={(params) => <TextField {...params} label="Search for members&clubs" variant="outlined" />}
+                        renderInput={(params) => <TextField {...params} label="Search for members&clubs"
+                                                            variant="outlined"/>}
                     />
                     <IconButton className={classes.createClub}
                                 edge="end"
@@ -188,7 +179,7 @@ export default function NavigationBar(props) {
                                 onClick={handleClick}
                                 color="inherit"
                             >
-                                <AccountCircle />
+                                <AccountCircle/>
                             </IconButton>
                             <Menu
                                 id="simple-menu"
@@ -198,7 +189,7 @@ export default function NavigationBar(props) {
                                 onClose={handleClose}
                             >
                                 <MenuItem onClick={handleClose}>
-                                    <Button href={"/profile/"+currentUser.name}>
+                                    <Button href={"/profile/" + currentUser.username}>
                                         Profile
                                     </Button>
                                 </MenuItem>
@@ -220,7 +211,6 @@ export default function NavigationBar(props) {
                     </div>
 
 
-
                 </Toolbar>
             </AppBar>
 
@@ -232,13 +222,13 @@ export default function NavigationBar(props) {
                 }}
                 anchor="left"
             >
-                <div className={classes.toolbar} />
-                <Divider />
+                <div className={classes.toolbar}/>
+                <Divider/>
                 <List>
-                    {clubs.map((club) =>{
-                        return(
+                    {clubs.map((club) => {
+                        return (
                             <ListItem button key={club.name}>
-                                <ListItemText primary={club.name} />
+                                <ListItemText primary={club.name}/>
                             </ListItem>
                         )
                     })}

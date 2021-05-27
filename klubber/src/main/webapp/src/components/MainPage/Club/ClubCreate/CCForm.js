@@ -122,7 +122,7 @@ export default function CCForm() {
                 Create Club!
             </Button>
             <div className={classes.message}>
-                {add == true && successMessage}
+                {add && successMessage}
                 {/*//{add==true && window.alert("Club added to the system successfully")}*/}
             </div>
         </form>

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -19,6 +19,8 @@ const useStyles = makeStyles((theme) => ({
     container: {
         height: "600px",
         maxHeight: 600,
+        overflow: "scroll"
+
     },
     margin: {
         margin: theme.spacing(1),
@@ -42,7 +44,7 @@ export default function ClubJoin(props) {
     })
 
 
-        return (
+    return (
         <Paper className={classes.root}>
             <TableContainer className={classes.container}>
                 <Table stickyHeader aria-label="sticky table">
@@ -52,7 +54,7 @@ export default function ClubJoin(props) {
                                 <TableCell
                                     key={column.id}
                                     align={column.align}
-                                    style={{ minWidth: column.minWidth }}
+                                    style={{minWidth: column.minWidth}}
                                 >
                                     {column.label}
                                 </TableCell>
@@ -67,11 +69,7 @@ export default function ClubJoin(props) {
                                         const value = row[column.id];
                                         return (
                                             <TableCell key={column.id} align={column.align}>
-                                                {column.id === 'name' ?
-                                                    <Link to={"club/" + value}>
-                                                        {value}
-                                                    </Link> : null}
-
+                                                {value}
                                                 {column.id === "join" ?
                                                     <Button variant="outlined"
                                                             color="primary"

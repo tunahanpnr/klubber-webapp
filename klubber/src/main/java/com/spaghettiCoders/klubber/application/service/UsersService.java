@@ -1,6 +1,7 @@
 package com.spaghettiCoders.klubber.application.service;
 
 
+import com.spaghettiCoders.klubber.application.dto.ClubDTO;
 import com.spaghettiCoders.klubber.application.dto.SubClubDTO;
 import com.spaghettiCoders.klubber.application.dto.UserDTO;
 import com.spaghettiCoders.klubber.application.dto.request.LoginReqDTO;
@@ -9,8 +10,10 @@ import com.spaghettiCoders.klubber.application.dto.response.LoginResDTO;
 import com.spaghettiCoders.klubber.application.entity.Club;
 import com.spaghettiCoders.klubber.application.entity.SubClub;
 import com.spaghettiCoders.klubber.application.entity.Users;
+import com.spaghettiCoders.klubber.application.mapper.ClubMapper;
 import com.spaghettiCoders.klubber.application.mapper.UsersMapper;
 
+import com.spaghettiCoders.klubber.application.repository.AnsweredClubRepository;
 import com.spaghettiCoders.klubber.application.repository.ClubRepository;
 import com.spaghettiCoders.klubber.application.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +26,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UsersService {
     private final UsersRepository usersRepository;
+    private final ClubRepository clubRepository;
+    private final AnsweredClubRepository answeredClubRepository;
     private final UsersMapper usersMapper;
+    private final ClubMapper clubMapper;
 
     public List<UserDTO> getAllUsers() {
 
@@ -87,5 +93,28 @@ public class UsersService {
 
         return subClubDTOList;
 
+    }
+
+    public List<ClubDTO> getMyClubs(String username) {
+        Users user = usersRepository.findByUsername(username);
+        if (user == null)
+            return null;
+
+        return clubMapper.mapToDto(user.getClubs());
+    }
+
+    public List<ClubDTO> getAvailableClubs(String username) {
+        Users user = usersRepository.findByUsername(username);
+        if (user == null)
+            return null;
+
+
+        List<Club> clubs = clubRepository.getClubs();
+        List<Club> joined = user.getClubs();
+        List<Club> answered = clubRepository.myAnsweredClubs(username);
+        clubs.removeAll(joined);
+        clubs.removeAll(answered);
+
+        return clubMapper.mapToDto(clubs);
     }
 }
