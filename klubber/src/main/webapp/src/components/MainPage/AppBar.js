@@ -68,7 +68,10 @@ const useStyles = makeStyles((theme) => ({
         // paddingLeft: `calc(1em + ${theme.spacing(130)}px)`,
     },
     createClub: {
-        paddingLeft: `calc(1em + ${theme.spacing(140)}px)`,
+
+    },
+    chat: {
+        paddingLeft: `calc(1em + ${theme.spacing(120)}px)`
     }
 }));
 
