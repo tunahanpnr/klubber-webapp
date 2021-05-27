@@ -36,7 +36,7 @@ public class AuthService {
         if(registerReqDTO.getEmail().equals(""))
             return "Email cant be null!";
 
-        if(isValid(registerReqDTO.getEmail()))
+        if(!isValid(registerReqDTO.getEmail()))
             return "Email pattern is wrong!";
 
         if(registerReqDTO.getPassword().equals(""))
