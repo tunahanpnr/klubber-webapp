@@ -10,6 +10,7 @@ import com.spaghettiCoders.klubber.application.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -186,8 +187,20 @@ public class ClubService {
     }
 
     public List<UserDTO> getUsers(String clubname) {
-        if (clubRepository.existsClubByName(clubname))
-            return usersMapper.mapToDto(clubRepository.getClubByName(clubname).getUsers());
+        List<Users> ClubUsers;
+        List<Users> ReturnUsers = new ArrayList<>();
+        if (clubRepository.existsClubByName(clubname)){
+            ClubUsers = clubRepository.getClubByName(clubname).getUsers();
+
+            for(Users u:ClubUsers){
+                if(u.isEnabled()){
+                    ReturnUsers.add(u);
+                }
+            }
+            return usersMapper.mapToDto(ReturnUsers);
+
+        }
+
 
         return null;
     }
