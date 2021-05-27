@@ -21,6 +21,7 @@ import axios from "axios";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {TextField} from '@material-ui/core';
 import {Link as Link} from "react-router-dom";
+import KlubberLogo from "./KlubberLogo.png"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -162,16 +163,18 @@ export default function NavigationBar(props) {
                         renderInput={(params) => <TextField {...params} label="Search for members&clubs"
                                                             variant="outlined"/>}
                     />
-                    <IconButton className={classes.createClub}
-                                edge="end"
-                                aria-label="club create button"
-                                aria-controls={'club-create-menu'}
-                                aria-haspopup="true"
-                                onClick={handleClubCreateMenuOpen}
-                                color="inherit"
-                    >
+                    {(currentUser.role === "ADMIN") &&
+                        <IconButton className={classes.createClub}
+                        edge="end"
+                        aria-label="club create button"
+                        aria-controls={'club-create-menu'}
+                        aria-haspopup="true"
+                        onClick={handleClubCreateMenuOpen}
+                        color="inherit"
+                        >
                         <AddBoxOutlinedIcon/>
-                    </IconButton>
+                        </IconButton>
+                    }
                     <div>
                         <Container className={classes.profile}>
                             <IconButton
@@ -191,7 +194,9 @@ export default function NavigationBar(props) {
                                 onClose={handleClose}
                             >
                                 <MenuItem onClick={handleClose}>
-                                    <Button href={"/profile/" + currentUser.username}>
+
+                                    <Button href={"/profile/"+currentUser.username}>
+
                                         Profile
                                     </Button>
                                 </MenuItem>
@@ -224,10 +229,13 @@ export default function NavigationBar(props) {
                 }}
                 anchor="left"
             >
-                <div className={classes.toolbar}/>
-                <Divider/>
+
+                <img src={KlubberLogo} alt="website logo"/>
+                <div className={classes.toolbar} />
+                <Divider />
+
                 <List>
-                    {clubs.map((club) => {
+                    {clubs && clubs.map((club) => {
                         return (
                             <ListItem button key={club.name}>
                                 <ListItemText primary={club.name}/>
