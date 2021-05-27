@@ -22,6 +22,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import {TextField} from '@material-ui/core';
 import {Link as Link} from "react-router-dom";
 import KlubberLogo from "./KlubberLogo.png"
+import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -32,7 +33,8 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: "20px",
         minWidth: "30%"
 
-    }
+    },
+
 }));
 
 
@@ -163,6 +165,16 @@ export default function NavigationBar(props) {
                         renderInput={(params) => <TextField {...params} label="Search for members&clubs"
                                                             variant="outlined"/>}
                     />
+                    <IconButton className={classes.chat}
+                                edge="end"
+                                aria-label="chat button"
+                                aria-controls={'chat-menu'}
+                                aria-haspopup="true"
+                                href={"/chat"}
+                                color="inherit"
+                    >
+                        <ChatBubbleIcon/>
+                    </IconButton>
                     {(currentUser.role === "ADMIN") &&
                         <IconButton className={classes.createClub}
                         edge="end"
