@@ -28,6 +28,15 @@ public class AuthService {
     private final EmailService emailService;
 
     public String signup(RegisterReqDTO registerReqDTO) {
+        if(registerReqDTO.getUsername().equals(""))
+            return "Username cant be null!";
+
+        if(registerReqDTO.getEmail().equals(""))
+            return "Email cant be null!";
+
+        if(registerReqDTO.getPassword().equals(""))
+            return "Password cant be null!";
+
         if (usersRepository.existsByUsername(registerReqDTO.getUsername())) {
             return "This username is already exits!";
         }

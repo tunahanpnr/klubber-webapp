@@ -70,6 +70,11 @@ export default function CCForm() {
                         setAdd(false)
                     }
                     setAdd(true)
+                    setClubCreateForm({
+                        name: "",
+                        requiredScore: 100,
+                        questions: []
+                    })
                 },
             ).catch(
             (error) => {

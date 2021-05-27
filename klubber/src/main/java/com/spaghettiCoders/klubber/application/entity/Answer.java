@@ -22,6 +22,6 @@ public class Answer extends BaseEntity {
     @Column(name = "score")
     private int score;
 
-    @ManyToMany(mappedBy = "answers")
+    @ManyToMany(mappedBy = "answers", cascade = {CascadeType.ALL})
     private List<Users> users = new ArrayList<>();
 }

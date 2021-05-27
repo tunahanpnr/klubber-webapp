@@ -26,7 +26,7 @@ public class CommentService {
             return "Wrong username!";
 
         if(comment.getComment().equals(""))
-            return "Comment cant be done!";
+            return "Comment cant be null!";
 
         commentRepository.save(comment);
 
